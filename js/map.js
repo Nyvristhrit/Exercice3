@@ -107,8 +107,8 @@ var Map = {
               Map.map.on('load', function () {
                 stations.forEach(function (station) {
                   //console.log(station.position); OK
-                  //console.log(station.position.lat); OKtest
-                    map.addSource('point', {
+                  //console.log(station.position.lat); OK
+                    Map.map.addSource('point', {
                         "type": "geojson",
                         "data": {
                             "type": "Point",
@@ -117,7 +117,7 @@ var Map = {
                     });
 
 
-                    map.addLayer({
+                    Map.map.addLayer({
                         "id": "point1",
                         "source": "point",
                         "type": "circle",
