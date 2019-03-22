@@ -26,7 +26,7 @@ var Map = {
           showZoom: true,
         });
 
-//Active le panneau de controle afin de pouvoir Zoomer
+//Active le panneau de controle afin de pouvoir Zoomer et désactive le compas
         Map.map.addControl(new mapboxgl.NavigationControl({showCompass: false}));
 
         Map.hideCountDownPanel();
@@ -34,12 +34,12 @@ var Map = {
     },
 
     // Add a marker clusterer to manage the markers.
-    displayMarkerCluster: function (map, markers) {
+    /*displayMarkerCluster: function (map, markers) {
         var markerCluster = new MarkerClusterer(Map.map, markers, {
             imagePath: 'img/m/m',
 
         });
-    },
+    },*/
 
     // when there isn't a current reservation : no countdown, no cancel button
     hideCountDownPanel: function () {
@@ -118,7 +118,7 @@ var Map = {
 
 
                     Map.map.addLayer({
-                        "id": "point1",
+                        "id": "unclustered-point",
                         "source": "point",
                         "type": "circle",
                         "paint": {
@@ -135,7 +135,7 @@ var Map = {
                     Map.reservationButton.css('display', 'block');
                     Map.stationName.text(station.name);
                     Map.stationAddress.text('Adresse : ' + station.address);
-                    Map.availableBikes.text('Vélib(s) disponible(s) : ' + station.available_bikes);
+                    Map.availableBikes.text('Bicloo(s) disponible(s) : ' + station.available_bikes);
                     Map.stationName.fadeIn('slow');
                     Map.stationAddress.fadeIn('slow');
                     Map.availableBikes.fadeIn('slow');
@@ -196,72 +196,3 @@ $(function () {
     Map.init();
 
 })
-
-/*var map = new mapboxgl.Map({
-    container: 'map',
-    style: 'mapbox://styles/mapbox/streets-v8',
-    center: [-1.553890, 47.217220],
-    zoom: 12.8
-});
-
-map.on('load', function () {
-
-    // Add a source and layer displaying a point which will be animated in a circle.
-    map.addSource('point', {
-        "type": "geojson",
-        "data": {
-          "type": "FeatureCollection",
-          "features": [
-            { "type": "Feature", "geometry": { "type": "Point", "coordinates": [-1.553890,47.217220, 0.0 ] } },
-            { "type": "Feature", "geometry": { "type": "Point", "coordinates": [-1.553899, 47.217229, 105.5 ] } }
-          ]
-        }
-    });
-
-
-
-    map.addLayer({
-        "id": "point",
-        "source": "point",
-        "type": "circle",
-        "paint": {
-            "circle-radius": initialRadius,
-            "circle-radius-transition": {duration: 0},
-            "circle-opacity-transition": {duration: 0},
-            "circle-color": "green"
-        }
-    });
-
-    map.addLayer({
-        "id": "point1",
-        "source": "point",
-        "type": "circle",
-        "paint": {
-            "circle-radius": initialRadius,
-            "circle-color": "black"
-        }
-    });
-
-
-    function animateMarker(timestamp) {
-        setTimeout(function(){
-            requestAnimationFrame(animateMarker);
-
-            radius += (maxRadius - radius) / framesPerSecond;
-            opacity -= ( .9 / framesPerSecond );
-
-            map.setPaintProperty('point', 'circle-radius', radius);
-            map.setPaintProperty('point', 'circle-opacity', opacity);
-
-            if (opacity <= 0) {
-                radius = initialRadius;
-                opacity = initialOpacity;
-            }
-
-        }, 1000 / framesPerSecond);
-
-    }
-
-    // Start the animation.
-    animateMarker(0);
-});*/
