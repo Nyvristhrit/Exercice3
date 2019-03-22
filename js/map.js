@@ -118,7 +118,7 @@ var Map = {
 
 
                     Map.map.addLayer({
-                        "id": "point1",
+                        "id": "unclustered-point",
                         "source": "point",
                         "type": "circle",
                         "paint": {
@@ -135,7 +135,7 @@ var Map = {
                     Map.reservationButton.css('display', 'block');
                     Map.stationName.text(station.name);
                     Map.stationAddress.text('Adresse : ' + station.address);
-                    Map.availableBikes.text('Vélib(s) disponible(s) : ' + station.available_bikes);
+                    Map.availableBikes.text('Bicloo(s) disponible(s) : ' + station.available_bikes);
                     Map.stationName.fadeIn('slow');
                     Map.stationAddress.fadeIn('slow');
                     Map.availableBikes.fadeIn('slow');
