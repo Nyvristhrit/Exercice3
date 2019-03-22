@@ -107,7 +107,7 @@ var Map = {
               Map.map.on('load', function () {
                 stations.forEach(function (station) {
                   //console.log(station.position); OK
-                  //console.log(station.position.lat); OKtest
+                  //console.log(station.position.lat); OK
                     map.addSource('point', {
                         "type": "geojson",
                         "data": {
@@ -152,7 +152,7 @@ var Map = {
                             Map.reservationPanel.css('display', 'block');
                             Map.availableBikes.text('Il y a ' + station.available_bikes + ' vélib(s) disponible(s) à réserver !');
                         } else {
-                            Map.availableBikes.text('Il n\' y a aucun vélib disponible à réserver !');
+                            Map.availableBikes.text('Il n\' y a aucun bicloo disponible dans cette station');
                             Map.reservationButton.css('display', 'none');
                             Map.reservationPanel.css('display', 'none');
                         }
