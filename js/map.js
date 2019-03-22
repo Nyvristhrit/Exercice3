@@ -104,12 +104,30 @@ var Map = {
               // On range la réponse dans un tableau stations
               var stations = JSON.parse(reponse);
               // For each station : we create a marker on the map + we define actions on click on this marker
-              stations.forEach(function (station) {
+              Map.map.on('load', function () {
+                stations.forEach(function (station) {
                   //console.log(station.position); OK
                   //console.log(station.position.lat); OK
-                  Map.map.addSource('point', { type: 'geojson', geometry: {"coordinates": [station.position.lat, station.position.lng]}
-                });
-                  markers.push(marker);
+                    map.addSource('point', {
+                        "type": "geojson",
+                        "data": {
+                            "type": "Point",
+                            "coordinates": [station.position.lat, station.position.lng]
+                        }
+                    });
+
+
+                    map.addLayer({
+                        "id": "point1",
+                        "source": "point",
+                        "type": "circle",
+                        "paint": {
+                            "circle-radius": 10,
+                            "circle-color": "pink"
+                        }
+                      });
+                    });
+                  });
 
 
                 // Display infosStations on click on the marker
