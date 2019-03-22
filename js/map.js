@@ -23,11 +23,11 @@ var Map = {
           center: [-1.553890, 47.217220],
           zoom: 12.8,
           scrollZoom: false,
-          showZoom: true
+          showZoom: true,
         });
 
 //Active le panneau de controle afin de pouvoir Zoomer
-        Map.map.addControl(new mapboxgl.NavigationControl());
+        Map.map.addControl(new mapboxgl.NavigationControl({showCompass: false}));
 
         Map.hideCountDownPanel();
         Map.callApiVelib();
@@ -127,7 +127,6 @@ var Map = {
                         }
                       });
                     });
-                  });
 
 
                 // Display infosStations on click on the marker
