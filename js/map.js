@@ -107,7 +107,7 @@ var Map = {
               Map.map.on('load', function () {
                 stations.forEach(function (station) {
                   //console.log(station.position); OK
-                  //console.log(station.position.lat); OK
+                  //console.log(station.position.lat); OKtest
                     map.addSource('point', {
                         "type": "geojson",
                         "data": {
