@@ -150,9 +150,9 @@ var Map = {
                     Map.reservationButton.click(function () {
                         if (station.available_bikes > 0) {
                             Map.reservationPanel.css('display', 'block');
-                            Map.availableBikes.text('Il y a ' + station.available_bikes + ' vélib(s) disponible(s) à réserver !');
+                            Map.availableBikes.text('Il y a ' + station.available_bikes + ' bicloo(s) disponible(s) à réserver');
                         } else {
-                            Map.availableBikes.text('Il n\' y a aucun vélib disponible à réserver !');
+                            Map.availableBikes.text('Il n\' y a aucun bicloo disponible dans cette station');
                             Map.reservationButton.css('display', 'none');
                             Map.reservationPanel.css('display', 'none');
                         }
@@ -168,8 +168,8 @@ var Map = {
                         sessionStorage.setItem('name', station.name);
                         Map.reservationPanel.css('display', 'none');
                         Map.reservationButton.css('display', 'none');
-                        Map.availableBikes.text('Vous avez réservé 1 vélib à cette station');
-                        Map.currentReservMessage.text('Vous avez réservé 1 vélib à la station ' + sessionStorage.name + ' pour ');
+                        Map.availableBikes.text('Vous avez réservé un bicloo à cette station');
+                        Map.currentReservMessage.text('Vous avez réservé un bicloo à la station ' + sessionStorage.name + ' pour ');
                         Map.cancelReservation.show();
                         // Reset a precedent countdown if there was a precedent reservation
                         clearInterval(Map.x);
@@ -186,7 +186,7 @@ var Map = {
                     })
                 });
             })
-            Map.displayMarkerCluster(map, markers);
+            //Map.displayMarkerCluster(map, markers);
         })
     },
 
