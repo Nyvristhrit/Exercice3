@@ -1,0 +1,428 @@
+html,
+body,
+button {
+    margin: 0 auto;
+    font-family: 'Roboto', sans-serif;
+}
+
+
+/* ------------------- Header --------------------- */
+
+header {
+    height: 100px;
+    background-color: #f97d2ae6;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 3px 5px rgba(100, 100, 100, 0.49);
+}
+
+h1 {
+    font-family: 'Roboto', cursive;
+    color: white;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+header i {
+    font-size: 2.5em;
+    margin: 40px;
+    color: white;
+}
+
+@media screen and (max-width: 570px) {
+    h1 {
+        font-size: 20px;
+        margin: 10px;
+    }
+}
+
+
+/* -------------------- Tutoriel ----------------- */
+
+#tutoriel {
+    color: grey;
+    position: relative;
+    /* for positionning buttons */
+}
+
+.container {
+    margin: 0 auto;
+    max-width: 900px;
+}
+
+#tutoriel h2 {
+    text-align: center;
+    font-size: 30px;
+    color: grey;
+    margin: 0;
+    padding-top: 70px;
+    margin-bottom: 50px;
+    font-weight: 300;
+}
+
+#tutoriel h3 {
+    color: grey;
+    text-align: center;
+    font-size: 2em;
+}
+
+#tutoriel p {
+    text-align: center;
+    margin-bottom: 70px;
+    max-width: 600px;
+    padding-bottom: 20px;
+}
+
+
+/* Slides style */
+
+.fade:first-of-type {
+    display: flex;
+}
+
+.fade {
+    display: none;
+    align-items: center;
+    flex-direction: column;
+}
+
+.fade img {
+    max-height: 500px;
+    border-radius: 25px;
+}
+
+@media screen and (max-width: 700px) {
+    .fade {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+@media screen and (max-width: 380px) {
+    .fade img {
+        max-width: 150px;
+    }
+}
+
+
+/* Fading animation */
+
+.fade,
+.info-station,
+.station-name,
+.station-address,
+.available-bikes,
+.reservation-button,
+.reservation {
+    -webkit-animation-name: fade;
+    -webkit-animation-duration: 2.5s;
+    animation-name: fade;
+    animation-duration: 2.5s;
+}
+
+@-webkit-keyframes fade {
+    from {
+        opacity: .4
+    }
+    to {
+        opacity: 1
+    }
+}
+
+@keyframes fade {
+    from {
+        opacity: .4
+    }
+    to {
+        opacity: 1
+    }
+}
+
+
+/* Tutorial slider controls */
+
+@keyframes hover {
+	50% {
+		transform: translateY(-3px);
+	}
+
+	100% {
+		transform: translateY(-10px);
+	}
+}
+
+@keyframes hover-shadow {
+	0% {
+		transform: translateY(10px);
+	}
+
+	50% {
+		transform: translateY(3px);
+	}
+
+
+	100% {
+		transform: translateY(5px);
+	}
+}
+
+.hover-shadow {
+	display: inline-block;
+	position: relative;
+	transition-duration: .3s;
+	transition-property: transform;
+  background: #f97d2ae6;
+  color: #fff;
+  border-radius: 7px;
+  box-shadow: 0 5px #ca6623e6;
+  font-size: 2em;
+  padding: 5px;
+  }
+
+.hover-shadow:before {
+  z-index: -1;
+  top: 100%;
+  left: 5%;
+  height: 10px;
+  width: 90%;
+	transition-duration: .3s;
+	transition-property: transform;
+	}
+
+.hover-shadow:hover {
+	transform: translateY(-10px);
+	animation-name: hover;
+	animation-duration: 1.5s;
+	animation-delay: .3s;
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+  background: #ca6623e6;
+  box-shadow: none;
+  cursor: pointer;
+	}
+
+.hover-shadow:hover:before {
+	transform: translateY(10px);
+	animation-name: hover-shadow;
+	animation-duration: 1.5s;
+	animation-delay: .3s;
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+	}
+
+.prev {
+    position: absolute;
+    top: 45%;
+    left: 50px;
+}
+
+.next {
+    position: absolute;
+    right: 50px;
+    top: 45%;
+}
+
+.play
+{
+    position: absolute;
+    right: 50%;
+    bottom: 10px;
+    font-size: 1.5em;
+    color: #f97d2ae6;
+    border-radius: 60px;
+    box-shadow: 0px 0px 2px #888;
+    padding: 10px 9px 10px 11px;
+    background-color: lightgrey;
+}
+
+.play:hover {
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.stop
+{
+    position: absolute;
+    right: 50%;
+    bottom: 10px;
+    font-size: 1.5em;
+    color: #f97d2ae6;
+    border-radius: 60px;
+    box-shadow: 0px 0px 2px grey;
+    padding: 10px;
+}
+
+.stop:hover {
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+
+@media screen and (max-width: 700px) {
+    .stop {
+        left: 10%;
+    }
+    .play {
+        right: 10%;
+    }
+}
+
+/* ---------------------- Section Reserv-Map --------------------- */
+
+#reserv-map {
+    display: flex;
+    flex-direction: row;
+}
+
+@media screen and (max-width: 1200px) {
+    #reserv-map {
+        flex-direction: column;
+    }
+    #map {
+        height: 300px;
+        margin: 20px;
+        border: solid 2px #556270;
+    }
+}
+
+@media screen and (min-width:1200px) {
+    #map {
+        height: 800px;
+        margin: 20px;
+        border: solid 2px #556270;
+        flex: 3;
+    }
+}
+
+
+/* Aside : info station & reservation */
+
+aside {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.info-station,
+.reservation {
+    height: 280px;
+    max-width: 500px;
+    margin: 20px;
+    color: white;
+    background-color: #556270;
+    border-radius: 10px;
+    overflow: hidden;
+    display: block;
+}
+
+#reserv-map h3 {
+    text-transform: uppercase;
+    text-align: center;
+    background-color: #45505b;
+    padding: 10px;
+    margin-top: 0;
+}
+
+.info-station p {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 0; padding-top: 0;
+    margin: 10px;
+}
+
+
+/* reservation buttons */
+
+#reserv-map button, .cancel {
+    font-weight: bold;
+    font-size: 15px;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.info-station button {
+    display: none;
+    ;
+    margin: 0 auto;
+    margin-top: 40px;
+}
+
+.info-station button,
+.reservation button:last-child,
+.cancel {
+    border: solid 2px #aa2b35;
+    background-color: #CC333F;
+    color: white;
+}
+
+#erase {
+    color: #556270;
+    background-color: white;
+    border: solid 2px #45505b;
+}
+
+.cancel {
+    padding: 3px 10px;
+    margin: 8px;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.reservation {
+    display: none;
+}
+
+
+/* ----------------------- Footer ----------------------- */
+
+footer {
+    height: 140px;
+    background-color: #EDC951;
+    border-top: solid 5px #e4af00;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+footer p {
+    color: #6d570c;
+    font-weight: bold;
+    font-size: 25px;
+    text-align: center;
+    margin: 5px;
+}
+
+footer .timer-text {
+    background-color: #EB6841;
+    padding: 2px 10px;
+    border-radius: 15px;
+    color: white;
+}
+
+@media screen and (max-width: 570px) {
+    footer p {
+        font-size: 18px;
+    }
+}
+
+
+/* canvas */
+
+#canvas-sign {
+    border: solid 2px #45505b;
+    background-color: white;
+    height: 150px;
+    width: 99%;
+}

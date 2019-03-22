@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <title>Réservation de Bicloo à Nantes</title>
+    <meta charset=utf-8>
+    <meta name="description" content="Retrouvez toutes les stations Bicloo Nantaise, et réservez y votre prochain bicloo !">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link href='https://api.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.css' rel='stylesheet' />
+</head>
+
+<body>
+
+    <header>
+        <i class="fas fa-bicycle"></i>
+        <h1>Réservation de Bicloo à Nantes</h1>
+        <i class="fas fa-bicycle"></i>
+    </header>
+
+    <section id="tutoriel">
+        <div class="container">
+            <h2>Découvrez comment réserver votre Bicloo :</h2>
+            <div class="fade">
+                <div><img src="img/etape0.png" alt="capture écran etape 1">
+                </div>
+                <div>
+                    <h3><span>Étape 1</span></h3>
+                    <p>Opta volupti orenimet enduciistis et doluptiur alisit, ipsape nim nonsequat qui ut pos audita sequam et laceatia quiae volenist, sita vel modicaestota nusciist opta alis im audaepe libus.
+Evelluptatem adit ation porerum aut re, tem nemperitium </p></div>
+            </div>
+            <div class="fade">
+                <div><img src="img/etape0.png" alt="capture écran etape 2">
+                </div>
+                <div>
+                    <h3><span>Étape 2</span></h3>
+                    <p>Opta volupti orenimet enduciistis et doluptiur alisit, ipsape nim nonsequat qui ut pos audita sequam et laceatia quiae volenist, sita vel modicaestota nusciist opta alis im audaepe libus.
+Evelluptatem adit ation porerum aut re, tem nemperitium </p></div>
+            </div>
+            <div class="fade">
+                <div><img src="img/etape0.png" alt="capture écran etape 3">
+                </div>
+                <div>
+                    <h3><span>Étape 3</span></h3>
+                    <p>Opta volupti orenimet enduciistis et doluptiur alisit, ipsape nim nonsequat qui ut pos audita sequam et laceatia quiae volenist, sita vel modicaestota nusciist opta alis im audaepe libus.
+Evelluptatem adit ation porerum aut re, tem nemperitium </p></div>
+            </div>
+            <div class="fade">
+                <div><img src="img/etape0.png" alt="capture écran etape 4">
+                </div>
+                <div>
+                    <h3><span>Étape 4</span></h3>
+                    <p>Opta volupti orenimet enduciistis et doluptiur alisit, ipsape nim nonsequat qui ut pos audita sequam et laceatia quiae volenist, sita vel modicaestota nusciist opta alis im audaepe libus.
+Evelluptatem adit ation porerum aut re, tem nemperitium </p></div>
+            </div>
+            <div class="fade">
+                <div><img src="img/etape0.png" alt="capture écran etape 5">
+                </div>
+                <div>
+                    <h3><span>Étape 5</span></h3>
+                    <p>Opta volupti orenimet enduciistis et doluptiur alisit, ipsape nim nonsequat qui ut pos audita sequam et laceatia quiae volenist, sita vel modicaestota nusciist opta alis im audaepe libus.
+Evelluptatem adit ation porerum aut re, tem nemperitium </p></div>
+            </div>
+        </div>
+        <i class="fa fa-arrow-alt-circle-right next swipe hover-shadow"></i>
+        <i class="fa fa-arrow-alt-circle-left prev swipe hover-shadow"></i>
+        <i class="fas fa-play play"></i>
+        <i class="fas fa-pause stop"></i>
+        <!-- <button class="play">| |</button>  -->
+    </section>
+
+    <section id="reserv-map">
+        <div id="map"></div>
+        <aside>
+            <div class="info-station">
+                <h3>Détails de la station</h3>
+                <p class="station-name">Sélectionner une station</p>
+                <p class="station-address"></p>
+                <p class="available-bikes"></p>
+                <button class="reservation-button">Réserver</button>
+            </div>
+            <div class="reservation">
+                <h3>Signer pour réserver</h3>
+                <canvas id="canvas-sign"></canvas>
+                <div class="buttons">
+                    <button id="erase">Effacer</button>
+                    <button id="submit">Valider</button>
+                </div>
+            </div>
+
+        </aside>
+    </section>
+
+    <footer>
+        <p>
+            <span class="footer-text">Aucune réservation en cours</span>
+            <br/>
+            <span class="timer-text"></span>
+            <br/>
+            <button class="cancel">Annuler</button>
+        </p>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.js'></script>
+    <!-- <script src="js/markerclusterer.js"></script> -->
+    <script src="js/ajax.js"></script>
+    <script src="js/slider.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/canvas.js"></script>
+
+</body>
+
+
+</html>
