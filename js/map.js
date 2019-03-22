@@ -26,7 +26,7 @@ var Map = {
           showZoom: true,
         });
 
-//Active le panneau de controle afin de pouvoir Zoomer et désactive le compas
+    //Active le panneau de controle afin de pouvoir Zoomer et désactive le compas
         Map.map.addControl(new mapboxgl.NavigationControl({showCompass: false}));
 
         Map.hideCountDownPanel();
