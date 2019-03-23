@@ -1,3 +1,27 @@
+function convert_to_geojson(json){
+    console.log(json)
+    geojson = {}
+    geojson.type = 	"FeatureCollection"
+    geojson.features = []
+
+    json.forEach(function (station) {
+      {
+        station.type = "Feature",
+        station.geometry = {
+          "type": "Point",
+          "coordinates": [station.position.lng, station.position.lat]
+        },
+        station.properties = {
+          "name": station.name
+        }
+
+        geojson.features.push(station)
+      }
+    })
+    console.log(geojson)
+    return geojson
+}
+
 var Map = {
     // stockage de l'Api JCDecaux open data dans Map
     velibApi: 'https://api.jcdecaux.com/vls/v1/stations?contract=nantes&apiKey=93d5179e7169f9d205bbdc2d581d485573a4df83',
@@ -103,37 +127,12 @@ var Map = {
           ajaxGet(Map.velibApi, function (reponse) {
               // On range la réponse dans un tableau stations
               var stations = JSON.parse(reponse);
-              // For each station : we create a marker on the map + we define actions on click on this marker
+              let stations_in_geojson = convert_to_geojson(stations)
+
               Map.map.on('load', function () {
-                  // stations.forEach(function (station) {
-                  //     console.log(station)
-                  //     console.log(station.position); // OK
-                  //     console.log(station.position.lat); // OK
-                  //
-                  //     let sourceName = 'point_'+station.number
-                  //     let layerName = 'layer_'+station.number
-                  //
-                  //     Map.map.addSource(sourceName, {
-                  //         "type": "geojson",
-                  //         "data": {
-                  //             "type": "Point",
-                  //             "coordinates": [station.position.lat, station.position.lng]
-                  //         }
-                  //     });
-                  //
-                  //     Map.map.addLayer({
-                  //         "id": layerName,
-                  //         "source": sourceName,
-                  //         "type": "circle",
-                  //         "paint": {
-                  //             "circle-radius": 10,
-                  //             "circle-color": "pink"
-                  //         }
-                  //     });
-                  // }); // foreach
                   Map.map.addSource("stations", {
                       type: "geojson",
-                      data: "https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson",
+                      data: stations_in_geojson,
                       cluster: true,
                       clusterMaxZoom: 14, // Max zoom to cluster points on
                       clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
@@ -198,5 +197,4 @@ var Map = {
 
 $(function () {
     Map.init();
-
 })
