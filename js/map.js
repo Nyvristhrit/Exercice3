@@ -105,90 +105,35 @@ var Map = {
               var stations = JSON.parse(reponse);
               // For each station : we create a marker on the map + we define actions on click on this marker
               Map.map.on('load', function () {
-                stations.forEach(function (station) {
-                  //console.log(station.position); OK
-                  //console.log(station.position.lat); OK
-                    Map.map.addSource('point', {
-                        "type": "geojson",
-                        "data": {
-                            "type": "Point",
-                            "coordinates": [station.position.lat, station.position.lng]
-                        }
-                    });
+                  stations.forEach(function (station) {
+                      console.log(station)
+                      console.log(station.position); // OK
+                      console.log(station.position.lat); // OK
 
+                      let sourceName = 'point_'+station.number
+                      let layerName = 'layer_'+station.number
 
-                    Map.map.addLayer({
-                        "id": "unclustered-point",
-                        "source": "point",
-                        "type": "circle",
-                        "paint": {
-                            "circle-radius": 10,
-                            "circle-color": "pink"
-                        }
+                      Map.map.addSource(sourceName, {
+                          "type": "geojson",
+                          "data": {
+                              "type": "Point",
+                              "coordinates": [station.position.lat, station.position.lng]
+                          }
                       });
-                    });
 
-
-                // Display infosStations on click on the marker
-                marker.addListener('click', function () {
-                    Map.hideInfosStation();
-                    Map.reservationButton.css('display', 'block');
-                    Map.stationName.text(station.name);
-                    Map.stationAddress.text('Adresse : ' + station.address);
-                    Map.availableBikes.text('Bicloo(s) disponible(s) : ' + station.available_bikes);
-                    Map.stationName.fadeIn('slow');
-                    Map.stationAddress.fadeIn('slow');
-                    Map.availableBikes.fadeIn('slow');
-                    // On click on a marker, smooth scroll to the informations panel for a better experience for mobile devices
-                    $('html, body').animate({
-                        scrollTop: Map.infoStationPanel.offset().top},
-                        'slow'
-                    );
-
-                    // Display the panel of reservation on click on the reservation button
-                    Map.reservationButton.click(function () {
-                        if (station.available_bikes > 0) {
-                            Map.reservationPanel.css('display', 'block');
-                            Map.availableBikes.text('Il y a ' + station.available_bikes + ' bicloo(s) disponible(s) à réserver');
-                        } else {
-                            Map.availableBikes.text('Il n\' y a aucun bicloo disponible dans cette station');
-                            Map.reservationButton.css('display', 'none');
-                            Map.reservationPanel.css('display', 'none');
-                        }
-                        // On click on a marker, smooth scroll to the reservation panel for a better experience for mobile devices
-                        $('html, body').animate({
-                        scrollTop: Map.reservationPanel.offset().top},
-                        'slow'
-                    );
-                    });
-
-                    // Register reservation on validation
-                    Map.submitButton.click(function () {
-                        sessionStorage.setItem('name', station.name);
-                        Map.reservationPanel.css('display', 'none');
-                        Map.reservationButton.css('display', 'none');
-                        Map.availableBikes.text('Vous avez réservé un bicloo à cette station');
-                        Map.currentReservMessage.text('Vous avez réservé un bicloo à la station ' + sessionStorage.name + ' pour ');
-                        Map.cancelReservation.show();
-                        // Reset a precedent countdown if there was a precedent reservation
-                        clearInterval(Map.x);
-                        // Start a new countdow for the current reservation
-                        Map.countDown();
-
-                        // Annulation of the reservation
-                        Map.cancelReservation.click(function () {
-                            clearInterval(Map.x);
-                            Map.currentReservMessage.text('');
-                            Map.timerText.text('Réservation annulée');
-                            Map.cancelReservation.hide();
-                        })
-                    })
-                });
-            })
-            //Map.displayMarkerCluster(map, markers);
-        })
-    },
-
+                      Map.map.addLayer({
+                          "id": layerName,
+                          "source": sourceName,
+                          "type": "circle",
+                          "paint": {
+                              "circle-radius": 10,
+                              "circle-color": "pink"
+                          }
+                      });
+                  }); // foreach
+              })
+          })
+      }, // callApiVelib
 }
 
 
