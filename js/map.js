@@ -105,33 +105,92 @@ var Map = {
               var stations = JSON.parse(reponse);
               // For each station : we create a marker on the map + we define actions on click on this marker
               Map.map.on('load', function () {
-                  stations.forEach(function (station) {
-                      console.log(station)
-                      console.log(station.position); // OK
-                      console.log(station.position.lat); // OK
+                  // stations.forEach(function (station) {
+                  //     console.log(station)
+                  //     console.log(station.position); // OK
+                  //     console.log(station.position.lat); // OK
+                  //
+                  //     let sourceName = 'point_'+station.number
+                  //     let layerName = 'layer_'+station.number
+                  //
+                  //     Map.map.addSource(sourceName, {
+                  //         "type": "geojson",
+                  //         "data": {
+                  //             "type": "Point",
+                  //             "coordinates": [station.position.lat, station.position.lng]
+                  //         }
+                  //     });
+                  //
+                  //     Map.map.addLayer({
+                  //         "id": layerName,
+                  //         "source": sourceName,
+                  //         "type": "circle",
+                  //         "paint": {
+                  //             "circle-radius": 10,
+                  //             "circle-color": "pink"
+                  //         }
+                  //     });
+                  // }); // foreach
+                  Map.map.addSource("stations", {
+                      type: "geojson",
+                      data: "https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson",
+                      cluster: true,
+                      clusterMaxZoom: 14, // Max zoom to cluster points on
+                      clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
+                  });
 
-                      let sourceName = 'point_'+station.number
-                      let layerName = 'layer_'+station.number
+                  Map.map.addLayer({
+                      id: "clusters",
+                      type: "circle",
+                      source: "stations",
+                      filter: ["has", "point_count"],
+                      paint: {
+                          "circle-color": [
+                              "step",
+                              ["get", "point_count"],
+                              "#51bbd6",
+                              100,
+                              "#f1f075",
+                              750,
+                              "#f28cb1"
+                          ],
+                          "circle-radius": [
+                              "step",
+                              ["get", "point_count"],
+                              20,
+                              100,
+                              30,
+                              750,
+                              40
+                          ]
+                      }
+                  });
 
-                      Map.map.addSource(sourceName, {
-                          "type": "geojson",
-                          "data": {
-                              "type": "Point",
-                              "coordinates": [station.position.lat, station.position.lng]
-                          }
-                      });
+                  Map.map.addLayer({
+                      id: "cluster-count",
+                      type: "symbol",
+                      source: "stations",
+                      filter: ["has", "point_count"],
+                      layout: {
+                          "text-field": "{point_count_abbreviated}",
+                          "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
+                          "text-size": 12
+                      }
+                  });
 
-                      Map.map.addLayer({
-                          "id": layerName,
-                          "source": sourceName,
-                          "type": "circle",
-                          "paint": {
-                              "circle-radius": 10,
-                              "circle-color": "pink"
-                          }
-                      });
-                  }); // foreach
-              })
+                  Map.map.addLayer({
+                      id: "unclustered-point",
+                      type: "circle",
+                      source: "stations",
+                      filter: ["!", ["has", "point_count"]],
+                      paint: {
+                          "circle-color": "#11b4da",
+                          "circle-radius": 4,
+                          "circle-stroke-width": 1,
+                          "circle-stroke-color": "#fff"
+                      }
+                  });
+              }) // Map on load
           })
       }, // callApiVelib
 }
