@@ -1,3 +1,27 @@
+function convert_to_geojson(json){
+    console.log(json)
+    geojson = {}
+    geojson.type = 	"FeatureCollection"
+    geojson.features = []
+
+    json.forEach(function (station) {
+      {
+        station.type = "Feature",
+        station.geometry = {
+          "type": "Point",
+          "coordinates": [station.position.lng, station.position.lat]
+        },
+        station.properties = {
+          "name": station.name
+        }
+
+        geojson.features.push(station)
+      }
+    })
+    console.log(geojson)
+    return geojson
+}
+
 var Map = {
     // stockage de l'Api JCDecaux open data dans Map
     velibApi: 'https://api.jcdecaux.com/vls/v1/stations?contract=nantes&apiKey=93d5179e7169f9d205bbdc2d581d485573a4df83',
@@ -32,14 +56,6 @@ var Map = {
         Map.hideCountDownPanel();
         Map.callApiVelib();
     },
-
-    // Add a marker clusterer to manage the markers.
-    /*displayMarkerCluster: function (map, markers) {
-        var markerCluster = new MarkerClusterer(Map.map, markers, {
-            imagePath: 'img/m/m',
-
-        });
-    },*/
 
     // when there isn't a current reservation : no countdown, no cancel button
     hideCountDownPanel: function () {
@@ -80,57 +96,78 @@ var Map = {
 
     },
 
-  /*  // Call of the velibAPI, display markers and clusterers, reservation, and countdown
+    // Call of the velibAPI, display markers and clusterers, reservation, and countdown
     callApiVelib: function () {
         ajaxGet(Map.velibApi, function (reponse) {
-            // Answer in a Javascript array
+            // On range la réponse dans un tableau stations
             var stations = JSON.parse(reponse);
-            markers = [];
-            // For each station : we create a marker on the map + we define actions on click on this marker
-            stations.forEach(function (station) {
-                //console.log(station.position);
-                var marker = new mapboxgl.Marker({
-                    latitude: station.position.lat,
-                    longitude: station.position.lng,
-                    map: Map.map,
-                    title: station.name,
+            let stations_in_geojson = convert_to_geojson(stations)
+
+            Map.map.on('load', function () {
+                Map.map.addSource("stations", {
+                    type: "geojson",
+                    data: stations_in_geojson,
+                    cluster: true,
+                    clusterMaxZoom: 14, // Max zoom to cluster points on
+                    //clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
                 });
-                console.log(marker.latitude);
-                markers.push(marker);*/
 
-      // Call of the velibAPI, display markers and clusterers, reservation, and countdown
-      callApiVelib: function () {
-          ajaxGet(Map.velibApi, function (reponse) {
-              // On range la réponse dans un tableau stations
-              var stations = JSON.parse(reponse);
-              // For each station : we create a marker on the map + we define actions on click on this marker
-              Map.map.on('load', function () {
-                stations.forEach(function (station) {
-                  //console.log(station.position); OK
-                  //console.log(station.position.lat); OK
-                    Map.map.addSource('point', {
-                        "type": "geojson",
-                        "data": {
-                            "type": "Point",
-                            "coordinates": [station.position.lat, station.position.lng]
-                        }
-                    });
+                Map.map.addLayer({
+                    id: "clusters",
+                    type: "circle",
+                    source: "stations",
+                    filter: ["has", "point_count"],
+                    paint: {
+                        "circle-color": [
+                            "step",
+                            ["get", "point_count"],
+                            "#FF8300",
+                            100,
+                            "grey"
+                        ],
+                        "circle-radius": [
+                            "step",
+                            ["get", "point_count"],
+                            25,
+                            100,
+                            50
+                        ]
+                    }
+                });
+
+                Map.map.addLayer({
+                    id: "cluster-count",
+                    type: "symbol",
+                    interactive: true,
+                    source: "stations",
+                    filter: ["has", "point_count"],
+                    layout: {
+                        "text-field": "{point_count_abbreviated}",
+                        "text-font": ["Open Sans Regular", "Arial Unicode MS Bold"],
+                        "text-size": 13
+                    },
+                    paint: {
+                      "text-color": "white"
+                    }
+                });
+
+                Map.map.addLayer({
+                    id: "unclustered-point",
+                    type: "circle",
+                    source: "stations",
+                    filter: ["!", ["has", "point_count"]],
+                    paint: {
+                        "circle-color": "#FF8300",
+                        "circle-radius": 8,
+                        "circle-stroke-width": 2,
+                        "circle-stroke-color": "#fff"
+                    }
+                });
+            }) // Map on load
 
 
-                    Map.map.addLayer({
-                        "id": "unclustered-point",
-                        "source": "point",
-                        "type": "circle",
-                        "paint": {
-                            "circle-radius": 10,
-                            "circle-color": "pink"
-                        }
-                      });
-                    });
-
-
-                // Display infosStations on click on the marker
-                marker.addListener('click', function () {
+              /*  // Display infosStations on click on the marker
+                Map.$('#unclustered-point').addListener('click', function () {
                     Map.hideInfosStation();
                     Map.reservationButton.css('display', 'block');
                     Map.stationName.text(station.name);
@@ -143,7 +180,29 @@ var Map = {
                     $('html, body').animate({
                         scrollTop: Map.infoStationPanel.offset().top},
                         'slow'
-                    );
+                    );*/
+
+                      Map.map.on('click', function (e) {
+                      console.log(e);
+
+                      Map.map.featuresAt(e.point, {radius: 100, layer: 'unclustered-point'}, function(err, features) {
+                        console.log(features[0]);
+
+                      });
+
+                        Map.hideInfosStation();
+                        Map.reservationButton.css('display', 'block');
+                        Map.stationName.text(station.name);
+                        Map.stationAddress.text('Adresse : ' + station.address);
+                        Map.availableBikes.text('Bicloo(s) disponible(s) : ' + station.available_bikes);
+                        Map.stationName.fadeIn('slow');
+                        Map.stationAddress.fadeIn('slow');
+                        Map.availableBikes.fadeIn('slow');
+                        // On click on a marker, smooth scroll to the informations panel for a better experience for mobile devices
+                        $('html, body').animate({
+                            scrollTop: Map.infoStationPanel.offset().top},
+                            'slow'
+                        );
 
                     // Display the panel of reservation on click on the reservation button
                     Map.reservationButton.click(function () {
@@ -185,12 +244,9 @@ var Map = {
                     })
                 });
             })
-            //Map.displayMarkerCluster(map, markers);
-        })
-    },
+        },
 
-}
-
+    }
 
 $(function () {
     Map.init();
