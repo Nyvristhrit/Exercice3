@@ -46,7 +46,6 @@ var Map = {
           style: 'mapbox://styles/nyvristhrit/cjtab00bk119l1fpeoeyybdjt',
           center: [-1.553890, 47.217220],
           zoom: 12.8,
-          scrollZoom: false,
           showZoom: true,
         });
 
@@ -165,6 +164,21 @@ var Map = {
                 });
             }) // Map on load
 
+            // inspect a cluster on click
+            Map.map.on('click', 'clusters', function (e) {
+              var features = map.queryRenderedFeatures(e.point, { layers: ['clusters'] });
+              var clusterId = features[0].properties.cluster_id;
+                map.getSource('stations').getClusterExpansionZoom(clusterId, function (err, zoom) {
+                  if (err)
+                  return;
+
+                map.easeTo({
+                  center: features[0].geometry.coordinates,
+                  zoom: zoom
+                });
+          });
+      });
+
 
               /*  // Display infosStations on click on the marker
                 Map.$('#unclustered-point').addListener('click', function () {
@@ -182,13 +196,6 @@ var Map = {
                         'slow'
                     );*/
 
-                      Map.map.on('click', function (e) {
-                      console.log(e);
-
-                      Map.map.featuresAt(e.point, {radius: 100, layer: 'unclustered-point'}, function(err, features) {
-                        console.log(features[0]);
-
-                      });
 
                         Map.hideInfosStation();
                         Map.reservationButton.css('display', 'block');
@@ -241,7 +248,6 @@ var Map = {
                             Map.timerText.text('Réservation annulée');
                             Map.cancelReservation.hide();
                         })
-                    })
                 });
             })
         },
