@@ -196,7 +196,7 @@ var Map = {
                         'slow'
                     );*/
 
-
+                    stations.forEach(function (station) {
                         Map.hideInfosStation();
                         Map.reservationButton.css('display', 'block');
                         Map.stationName.text(station.name);
@@ -250,6 +250,7 @@ var Map = {
                         })
                 });
             })
+});
         },
 
     }
