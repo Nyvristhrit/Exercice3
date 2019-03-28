@@ -164,34 +164,39 @@ var Map = {
                 });
              // Map on load
 
-                        // inspect a cluster on click
-                        Map.map.on('click', 'clusters', function (e) {
-                          var features = Map.map.queryRenderedFeatures(e.point, { layers: ['clusters'] });
-                          var clusterId = features[0].properties.cluster_id;
-                            Map.map.getSource('stations').getClusterExpansionZoom(clusterId, function (err, zoom) {
-                              if (err)
-                              return;
+                // Au click sur un cluster effectue un Zoom
+                Map.map.on('click', 'clusters', function (e) {
+                  var features = Map.map.queryRenderedFeatures(e.point, { layers: ['clusters'] });
+                  var clusterId = features[0].properties.cluster_id;
+                    Map.map.getSource('stations').getClusterExpansionZoom(clusterId, function (err, zoom) {
+                      if (err)
+                      return;
 
-                            Map.map.easeTo({
-                              center: features[0].geometry.coordinates,
-                              zoom: zoom
-                            });
-                      });
-                  });
-                        Map.map.on('mouseenter', 'clusters', function () {
-                        Map.map.getCanvas().style.cursor = 'pointer';
-                  });
-                        Map.map.on('mouseleave', 'clusters', function () {
-                        Map.map.getCanvas().style.cursor = '';
-                  });
+                    Map.map.easeTo({
+                      center: features[0].geometry.coordinates,
+                      zoom: zoom
+                    });
               });
+          });
+          // Center the map on the coordinates of any clicked symbol from the 'symbols' layer.
+          Map.map.on('click', 'unclustered-point', function (e) {
+          Map.map.flyTo({center: e.features[0].geometry.coordinates});
+          });
 
-              /*Map.map.on('click', function(e) {
+          Map.map.on('mouseenter', 'clusters', function () {
+          Map.map.getCanvas().style.cursor = 'pointer';
+          });
+          Map.map.on('mouseleave', 'clusters', function () {
+          Map.map.getCanvas().style.cursor = '';
+    });
+});
+
+            /*  Map.map.on('click', function(e) {
 
                   console.log(e);
 
-                    Map.map.featuresAt(e.point, {radius: 100, layer: 'unclustered-point'}, function(err, features) {
-                          console.log(features[0]);
+                    Map.map.featuresAt(e.point, {radius: 10, layer: 'unclustered-point'}, function(err, features) {
+                          console.log(features[0].name);
 
                     });
 
@@ -258,13 +263,3 @@ $(function () {
     Map.init();
 
 })
-Map.map.on('click', function(e) {
-
-    console.log(e);
-
-      Map.map.featuresAt(e.point, {radius: 100, layer: 'unclustered-point'}, function(err, features) {
-            console.log(features[0]);
-
-      });
-
-    });
