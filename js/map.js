@@ -162,41 +162,41 @@ var Map = {
                         "circle-stroke-color": "#fff"
                     }
                 });
-            }) // Map on load
+             // Map on load
 
-            // inspect a cluster on click
-            Map.map.on('click', 'clusters', function (e) {
-              var features = map.queryRenderedFeatures(e.point, { layers: ['clusters'] });
-              var clusterId = features[0].properties.cluster_id;
-                map.getSource('stations').getClusterExpansionZoom(clusterId, function (err, zoom) {
-                  if (err)
-                  return;
+                        // inspect a cluster on click
+                        Map.map.on('click', 'clusters', function (e) {
+                          var features = Map.map.queryRenderedFeatures(e.point, { layers: ['clusters'] });
+                          var clusterId = features[0].properties.cluster_id;
+                            Map.map.getSource('stations').getClusterExpansionZoom(clusterId, function (err, zoom) {
+                              if (err)
+                              return;
 
-                map.easeTo({
-                  center: features[0].geometry.coordinates,
-                  zoom: zoom
-                });
-          });
-      });
+                            Map.map.easeTo({
+                              center: features[0].geometry.coordinates,
+                              zoom: zoom
+                            });
+                      });
+                  });
+                        Map.map.on('mouseenter', 'clusters', function () {
+                        Map.map.getCanvas().style.cursor = 'pointer';
+                  });
+                        Map.map.on('mouseleave', 'clusters', function () {
+                        Map.map.getCanvas().style.cursor = '';
+                  });
+              });
 
+              /*Map.map.on('click', function(e) {
 
-              /*  // Display infosStations on click on the marker
-                Map.$('#unclustered-point').addListener('click', function () {
-                    Map.hideInfosStation();
-                    Map.reservationButton.css('display', 'block');
-                    Map.stationName.text(station.name);
-                    Map.stationAddress.text('Adresse : ' + station.address);
-                    Map.availableBikes.text('Bicloo(s) disponible(s) : ' + station.available_bikes);
-                    Map.stationName.fadeIn('slow');
-                    Map.stationAddress.fadeIn('slow');
-                    Map.availableBikes.fadeIn('slow');
-                    // On click on a marker, smooth scroll to the informations panel for a better experience for mobile devices
-                    $('html, body').animate({
-                        scrollTop: Map.infoStationPanel.offset().top},
-                        'slow'
-                    );*/
+                  console.log(e);
 
-                    stations.forEach(function (station) {
+                    Map.map.featuresAt(e.point, {radius: 100, layer: 'unclustered-point'}, function(err, features) {
+                          console.log(features[0]);
+
+                    });
+
+                  });*/
+
                         Map.hideInfosStation();
                         Map.reservationButton.css('display', 'block');
                         Map.stationName.text(station.name);
@@ -250,7 +250,6 @@ var Map = {
                         })
                 });
             })
-});
         },
 
     }
@@ -259,3 +258,13 @@ $(function () {
     Map.init();
 
 })
+Map.map.on('click', function(e) {
+
+    console.log(e);
+
+      Map.map.featuresAt(e.point, {radius: 100, layer: 'unclustered-point'}, function(err, features) {
+            console.log(features[0]);
+
+      });
+
+    });
