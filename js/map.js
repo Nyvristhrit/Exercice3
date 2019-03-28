@@ -178,17 +178,24 @@ var Map = {
                     });
               });
           });
-          // Center the map on the coordinates of any clicked symbol from the 'symbols' layer.
+          // Définit l'apparence du pointer de la souris au survol de ceux ci
           Map.map.on('click', 'unclustered-point', function (e) {
           Map.map.flyTo({center: e.features[0].geometry.coordinates});
           });
-
+          Map.map.on('mouseenter', 'unclustered-point', function () {
+          Map.map.getCanvas().style.cursor = 'pointer';
+          });
+          Map.map.on('mouseleave', 'unclustered-point', function () {
+          Map.map.getCanvas().style.cursor = '';
+          });
           Map.map.on('mouseenter', 'clusters', function () {
           Map.map.getCanvas().style.cursor = 'pointer';
           });
           Map.map.on('mouseleave', 'clusters', function () {
           Map.map.getCanvas().style.cursor = '';
-    });
+          });
+
+
 });
 
             /*  Map.map.on('click', function(e) {
