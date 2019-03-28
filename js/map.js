@@ -198,8 +198,8 @@ var Map = {
 
 });
 
-            /*  Map.map.on('click', function(e) {
-
+        /*  Map.map.on('click', function(e) {
+                  console.log(features[0].name),
                   console.log(e);
 
                     Map.map.featuresAt(e.point, {radius: 10, layer: 'unclustered-point'}, function(err, features) {
