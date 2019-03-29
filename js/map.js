@@ -12,7 +12,9 @@ function convert_to_geojson(json){
           "coordinates": [station.position.lng, station.position.lat]
         },
         station.properties = {
-          "name": station.name
+          "name": station.name,
+          "address": station.address,
+          "available_bikes": station.available_bikes
         }
 
         geojson.features.push(station)
@@ -210,23 +212,22 @@ var Map = {
                   });*/
 
                     Map.map.on('click', 'unclustered-point', function (e) {
-                    let name = e.features[0].properties.name;
-                    console.log(name)
-                    });
+                    Map.hideInfosStation();
+                    Map.reservationButton.css('display', 'block');
+                    Map.stationName.text(e.features[0].properties.name);
+                    Map.stationAddress.text('Adresse : ' + e.features[0].properties.address);
+                    Map.availableBikes.text('Bicloo(s) disponible(s) : ' + e.features[0].properties.available_bikes);
+                    Map.stationName.fadeIn('slow');
+                    Map.stationAddress.fadeIn('slow');
+                    Map.availableBikes.fadeIn('slow');
+                    // On click on a marker, smooth scroll to the informations panel for a better experience for mobile devices
+                    $('html, body').animate({
+                        scrollTop: Map.infoStationPanel.offset().top},
+                        'slow'
+                    );
+                  });
 
-                        Map.hideInfosStation();
-                        Map.reservationButton.css('display', 'block');
-                        Map.stationName.text(station.name);
-                        Map.stationAddress.text('Adresse : ' + station.address);
-                        Map.availableBikes.text('Bicloo(s) disponible(s) : ' + station.available_bikes);
-                        Map.stationName.fadeIn('slow');
-                        Map.stationAddress.fadeIn('slow');
-                        Map.availableBikes.fadeIn('slow');
-                        // On click on a marker, smooth scroll to the informations panel for a better experience for mobile devices
-                        $('html, body').animate({
-                            scrollTop: Map.infoStationPanel.offset().top},
-                            'slow'
-                        );
+
 
                     // Display the panel of reservation on click on the reservation button
                     Map.reservationButton.click(function () {
