@@ -198,16 +198,35 @@ var Map = {
 
 });
 
-        /*  Map.map.on('click', function(e) {
-                  console.log(features[0].name),
+          /*Map.map.on('click', function(e) {
+                  console.log(feature[0].name),
                   console.log(e);
 
                     Map.map.featuresAt(e.point, {radius: 10, layer: 'unclustered-point'}, function(err, features) {
-                          console.log(features[0].name);
+                          console.log(feature[0].name);
 
                     });
 
                   });*/
+
+                /*  Map.map.on('click', function (e) {
+                    // Use featuresAt to get features within a given radius of the click event
+                    // Use layer option to avoid getting results from other layers
+                    Map.map.featuresAt(e.point, {layer: 'clusters', radius: 10, includeGeometry: true}, function (err, features) {
+                        if (err) throw err;
+                        // if there are features within the given radius of the click event,
+                        // fly to the location of the click event
+                        if (features.length) {
+                            // Get coordinates from the symbol and center the map on those coordinates
+                            Map.map.flyTo({center: features[0].geometry.coordinates});
+                            var featureName = features[0].properties.name;
+                            var tooltip = new mapboxgl.Popup()
+                                .setLngLat(e.lngLat)
+                                .setHTML('<p>' + featureName + '</p>')
+                                .addTo(map);
+                        }
+                    });
+                });*/
 
                         Map.hideInfosStation();
                         Map.reservationButton.css('display', 'block');
