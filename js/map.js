@@ -209,23 +209,10 @@ var Map = {
 
                   });*/
 
-                    Map.map.on('click', function (e) {
-                    // Use featuresAt to get features within a given radius of the click event
-                    // Use layer option to avoid getting results from other layers
-                    Map.map.featuresAt(e.point, {layer: 'clusters', radius: 10, includeGeometry: true}, function (err, features) {
-                        if (err) throw err;
-                        // if there are features within the given radius of the click event,
-                        // fly to the location of the click event
-                        if (features.length) {
-                            var featureName = features[0].properties.name;
-                            console.log(features[0].properties.name)
-                            var tooltip = new mapboxgl.Popup()
-                                .setLngLat(e.lngLat)
-                                .setHTML('<p>' + featureName + '</p>')
-                                .addTo(map);
-                        }
+                    Map.map.on('click', 'unclustered-point', function (e) {
+                    let name = e.features[0].properties.name;
+                    console.log(name)
                     });
-                });
 
                         Map.hideInfosStation();
                         Map.reservationButton.css('display', 'block');
