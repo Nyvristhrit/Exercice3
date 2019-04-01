@@ -26,7 +26,7 @@ function convert_to_geojson(json){
 
 var Map = {
     // stockage de l'Api JCDecaux open data dans Map
-    velibApi: 'https://api.jcdecaux.com/vls/v1/stations?contract=nantes&apiKey=93d5179e7169f9d205bbdc2d581d485573a4df83',
+    jcdecauxAPI: 'https://api.jcdecaux.com/vls/v1/stations?contract=nantes&apiKey=93d5179e7169f9d205bbdc2d581d485573a4df83',
     map: null,
     reservationPanel: $('.reservation'),
     stationName: $('.station-name'),
@@ -55,7 +55,7 @@ var Map = {
         Map.map.addControl(new mapboxgl.NavigationControl({showCompass: false}));
 
         Map.hideCountDownPanel();
-        Map.callApiVelib();
+        Map.appelJcdApi();
     },
 
     // when there isn't a current reservation : no countdown, no cancel button
@@ -97,9 +97,9 @@ var Map = {
 
     },
 
-    // Call of the velibAPI, display markers and clusterers, reservation, and countdown
-    callApiVelib: function () {
-        ajaxGet(Map.velibApi, function (reponse) {
+    // Appel de l'API JCDecaux, display markers and clusterers, reservation, and countdown
+    appelJcdApi: function () {
+        ajaxGet(Map.jcdecauxAPI, function (reponse) {
             // On range la réponse dans un tableau stations
             var stations = JSON.parse(reponse);
             let stations_in_geojson = convert_to_geojson(stations)
@@ -200,38 +200,32 @@ var Map = {
 
 });
 
-          /*Map.map.on('click', function(e) {
-                  console.log(feature[0].name),
-                  console.log(e);
+          Map.map.on('click', 'unclustered-point', function (e) {
+          Map.hideInfosStation();
+          Map.reservationButton.css('display', 'block');
+          Map.stationName.text(e.features[0].properties.name);
+          Map.stationAddress.text('Adresse : ' + e.features[0].properties.address);
+          Map.availableBikes.text('Bicloo(s) disponible(s) : ' + e.features[0].properties.available_bikes);
+          Map.stationName.fadeIn('slow');
+          Map.stationAddress.fadeIn('slow');
+          Map.availableBikes.fadeIn('slow');
+          // On click on a marker, smooth scroll to the informations panel for a better experience for mobile devices
+          $('html, body').animate({
+              scrollTop: Map.infoStationPanel.offset().top},
+              'slow'
+        );
 
-                    Map.map.featuresAt(e.point, {radius: 10, layer: 'unclustered-point'}, function(err, features) {
-                          console.log(feature[0].name);
 
-                    });
 
-                  });*/
 
-                    Map.map.on('click', 'unclustered-point', function (e) {
-                    Map.hideInfosStation();
-                    Map.reservationButton.css('display', 'block');
-                    Map.stationName.text(e.features[0].properties.name);
-                    Map.stationAddress.text('Adresse : ' + e.features[0].properties.address);
-                    Map.availableBikes.text('Bicloo(s) disponible(s) : ' + e.features[0].properties.available_bikes);
-                    Map.stationName.fadeIn('slow');
-                    Map.stationAddress.fadeIn('slow');
-                    Map.availableBikes.fadeIn('slow');
-                    // On click on a marker, smooth scroll to the informations panel for a better experience for mobile devices
-                    $('html, body').animate({
-                        scrollTop: Map.infoStationPanel.offset().top},
-                        'slow'
-                    );
-                  });
+
+      });
 
 
 
                     // Display the panel of reservation on click on the reservation button
                     Map.reservationButton.click(function () {
-                        if (station.available_bikes > 0) {
+                        if (e.features[0].properties.available_bikes > 0) {
                             Map.reservationPanel.css('display', 'block');
                             Map.availableBikes.text('Il y a ' + station.available_bikes + ' bicloo(s) disponible(s) à réserver');
                         } else {
