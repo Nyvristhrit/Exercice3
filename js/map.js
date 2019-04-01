@@ -164,7 +164,6 @@ var Map = {
                         "circle-stroke-color": "#fff"
                     }
                 });
-             // Map on load
 
                 // Au click sur un cluster effectue un Zoom
                 Map.map.on('click', 'clusters', function (e) {
@@ -214,31 +213,24 @@ var Map = {
               scrollTop: Map.infoStationPanel.offset().top},
               'slow'
         );
+});
 
-
-
-
-
-      });
-
-
-
-                    // Display the panel of reservation on click on the reservation button
-                    Map.reservationButton.click(function () {
-                        if (e.features[0].properties.available_bikes > 0) {
-                            Map.reservationPanel.css('display', 'block');
-                            Map.availableBikes.text('Il y a ' + station.available_bikes + ' bicloo(s) disponible(s) à réserver');
-                        } else {
-                            Map.availableBikes.text('Il n\' y a aucun bicloo disponible dans cette station');
-                            Map.reservationButton.css('display', 'none');
-                            Map.reservationPanel.css('display', 'none');
-                        }
-                        // On click on a marker, smooth scroll to the reservation panel for a better experience for mobile devices
-                        $('html, body').animate({
-                        scrollTop: Map.reservationPanel.offset().top},
-                        'slow'
-                    );
-                    });
+          // Display the panel of reservation on click on the reservation button
+            Map.reservationButton.click(function () {
+                if (e.features[0].properties.available_bikes > 0) {
+                    Map.reservationPanel.css('display', 'block');
+                    Map.availableBikes.text('Il y a ' + station.available_bikes + ' bicloo(s) disponible(s) à réserver');
+                } else {
+                    Map.availableBikes.text('Il n\' y a aucun bicloo disponible dans cette station');
+                    Map.reservationButton.css('display', 'none');
+                    Map.reservationPanel.css('display', 'none');
+                }
+                // On click on a marker, smooth scroll to the reservation panel for a better experience for mobile devices
+                $('html, body').animate({
+                scrollTop: Map.reservationPanel.offset().top},
+                'slow'
+            );
+            });
 
                     // Register reservation on validation
                     Map.submitButton.click(function () {
