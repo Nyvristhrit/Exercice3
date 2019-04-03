@@ -211,12 +211,15 @@ var Map = {
           Map.availableBikes.fadeIn('slow');
           // On click on a marker, smooth scroll to the informations panel for a better experience for mobile devices
           $('html, body').animate({
-              scrollTop: Map.infoStationPanel.offset().top},'slow');
+              scrollTop: Map.infoStationPanel.offset().top},'slow'
+            );
+              let selectedStation = [e.features[0].properties.name, e.features[0].properties.address, e.features[0].properties.available_bikes];
+              return selectedStation
       });
 
           // Display the panel of reservation on click on the reservation button
             Map.reservationButton.click(function () {
-              console.log(availableBikes)
+              console.log(selectedStation[0]); //idk why that doesn't works ...
                 if (availableBikes > 0) {
                     Map.reservationPanel.css('display', 'block');
                     Map.availableBikes.text('Il y a ' + station.available_bikes + ' bicloo(s) disponible(s) à réserver');
@@ -229,8 +232,8 @@ var Map = {
                 $('html, body').animate({
                 scrollTop: Map.reservationPanel.offset().top},
                 'slow'
-            );
-            });
+                );
+          });
 
                     // Register reservation on validation
                     Map.submitButton.click(function () {
