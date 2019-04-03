@@ -195,29 +195,29 @@ var Map = {
           Map.map.on('mouseleave', 'clusters', function () {
           Map.map.getCanvas().style.cursor = '';
           });
-
-
-});
+        });
 
           Map.map.on('click', 'unclustered-point', function (e) {
+          let stationName = e.features[0].properties.name;
+          let stationAddress = e.features[0].properties.address;
+          let availableBikes =  e.features[0].properties.available_bikes;
           Map.hideInfosStation();
           Map.reservationButton.css('display', 'block');
-          Map.stationName.text(e.features[0].properties.name);
-          Map.stationAddress.text('Adresse : ' + e.features[0].properties.address);
-          Map.availableBikes.text('Bicloo(s) disponible(s) : ' + e.features[0].properties.available_bikes);
+          Map.stationName.text(stationName);
+          Map.stationAddress.text('Adresse : ' + stationAddress);
+          Map.availableBikes.text('Bicloo(s) disponible(s) : ' + availableBikes);
           Map.stationName.fadeIn('slow');
           Map.stationAddress.fadeIn('slow');
           Map.availableBikes.fadeIn('slow');
           // On click on a marker, smooth scroll to the informations panel for a better experience for mobile devices
           $('html, body').animate({
-              scrollTop: Map.infoStationPanel.offset().top},
-              'slow'
-        );
-});
+              scrollTop: Map.infoStationPanel.offset().top},'slow');
+      });
 
           // Display the panel of reservation on click on the reservation button
             Map.reservationButton.click(function () {
-                if (e.features[0].properties.available_bikes > 0) {
+              console.log(availableBikes)
+                if (availableBikes > 0) {
                     Map.reservationPanel.css('display', 'block');
                     Map.availableBikes.text('Il y a ' + station.available_bikes + ' bicloo(s) disponible(s) à réserver');
                 } else {
