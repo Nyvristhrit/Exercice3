@@ -24,7 +24,7 @@ function convert_to_geojson(json){
     return geojson
 }
 
-var Map = {
+const Map = {
     // stockage de l'Api JCDecaux open data dans Map
     jcdecauxAPI: 'https://api.jcdecaux.com/vls/v1/stations?contract=nantes&apiKey=93d5179e7169f9d205bbdc2d581d485573a4df83',
     map: null,
@@ -198,14 +198,11 @@ var Map = {
         });
 
           Map.map.on('click', 'unclustered-point', function (e) {
-          let stationName = e.features[0].properties.name;
-          let stationAddress = e.features[0].properties.address;
-          let availableBikes =  e.features[0].properties.available_bikes;
           Map.hideInfosStation();
           Map.reservationButton.css('display', 'block');
-          Map.stationName.text(stationName);
-          Map.stationAddress.text('Adresse : ' + stationAddress);
-          Map.availableBikes.text('Bicloo(s) disponible(s) : ' + availableBikes);
+          Map.stationName.text(e.features[0].properties.name);
+          Map.stationAddress.text(`Adresse : ${e.features[0].properties.address}`);
+          Map.availableBikes.text(`Bicloo(s) disponible(s) : ${e.features[0].properties.available_bikes}`);
           Map.stationName.fadeIn('slow');
           Map.stationAddress.fadeIn('slow');
           Map.availableBikes.fadeIn('slow');
@@ -222,7 +219,7 @@ var Map = {
               console.log(selectedStation[0]); //idk why that doesn't works ...
                 if (availableBikes > 0) {
                     Map.reservationPanel.css('display', 'block');
-                    Map.availableBikes.text('Il y a ' + station.available_bikes + ' bicloo(s) disponible(s) à réserver');
+                    Map.availableBikes.text(`Il y a ${station.available_bikes} bicloo(s) disponible(s) à réserver`);
                 } else {
                     Map.availableBikes.text('Il n\' y a aucun bicloo disponible dans cette station');
                     Map.reservationButton.css('display', 'none');
@@ -241,7 +238,7 @@ var Map = {
                         Map.reservationPanel.css('display', 'none');
                         Map.reservationButton.css('display', 'none');
                         Map.availableBikes.text('Vous avez réservé un bicloo à cette station');
-                        Map.currentReservMessage.text('Vous avez réservé un bicloo à la station ' + sessionStorage.name + ' pour ');
+                        Map.currentReservMessage.text(`Vous avez réservé un bicloo à la station ${sessionStorage.name} pour`);
                         Map.cancelReservation.show();
                         // Reset a precedent countdown if there was a precedent reservation
                         clearInterval(Map.x);
