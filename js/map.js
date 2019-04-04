@@ -210,12 +210,10 @@ const Map = {
           $('html, body').animate({
               scrollTop: Map.infoStationPanel.offset().top},'slow'
             );
-              let selectedStation = [e.features[0].properties.name, e.features[0].properties.address, e.features[0].properties.available_bikes];
-              return selectedStation
       });
 
           // Display the panel of reservation on click on the reservation button
-            Map.reservationButton.click(function () {
+          Map.reservationButton.click(function () {
               console.log(selectedStation[0]); //idk why that doesn't works ...
                 if (availableBikes > 0) {
                     Map.reservationPanel.css('display', 'block');
