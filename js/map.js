@@ -35,6 +35,7 @@ const Map = {
     infoStationPanel: $('.info-station'),
     reservationButton: $('.reservation-button'),
     submitButton: $('#submit'),
+    formSpan: $('#form'),
     currentReservMessage: $('.footer-text'),
     cancelReservation: $('.cancel'),
     timerText: $('.timer-text'),
@@ -64,7 +65,7 @@ const Map = {
         Map.cancelReservation.hide();
     },
 
-    // Hide precedent station informations on click on a different station
+    // Masque les informations de la précédente station
     hideInfosStation: function () {
         Map.reservationPanel.fadeOut();
         Map.stationName.hide();
@@ -110,7 +111,7 @@ const Map = {
                     data: stations_in_geojson,
                     cluster: true,
                     clusterMaxZoom: 14, // Max zoom to cluster points on
-                    //clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
+                    //clusterRadius: (defaults to 50)
                 });
 
                 Map.map.addLayer({
@@ -198,60 +199,63 @@ const Map = {
         });
 
           Map.map.on('click', 'unclustered-point', function (e) {
-          Map.hideInfosStation();
-          Map.reservationButton.css('display', 'block');
-          Map.stationName.text(e.features[0].properties.name);
-          Map.stationAddress.text(`Adresse : ${e.features[0].properties.address}`);
-          Map.availableBikes.text(`Bicloo(s) disponible(s) : ${e.features[0].properties.available_bikes}`);
-          Map.stationName.fadeIn('slow');
-          Map.stationAddress.fadeIn('slow');
-          Map.availableBikes.fadeIn('slow');
-          // On click on a marker, smooth scroll to the informations panel for a better experience for mobile devices
-          $('html, body').animate({
-              scrollTop: Map.infoStationPanel.offset().top},'slow'
+            const stationName = e.features[0].properties.name;
+            const stationAddress = e.features[0].properties.address;
+            const stationAvailableBikes = e.features[0].properties.available_bikes;
+            Map.hideInfosStation();
+            Map.reservationButton.css('display', 'block');
+            Map.formSpan.css('display', 'block');
+            Map.stationName.text(e.features[0].properties.name);
+            Map.stationAddress.text(`Adresse : ${e.features[0].properties.address}`);
+            Map.availableBikes.text(`Bicloo(s) disponible(s) : ${e.features[0].properties.available_bikes}`);
+            Map.stationName.fadeIn('slow');
+            Map.stationAddress.fadeIn('slow');
+            Map.availableBikes.fadeIn('slow');
+            // scroll vers le pânneau d'informations
+            $('html, body').animate({
+                scrollTop: Map.infoStationPanel.offset().top},'slow'
             );
-      });
-
-          // Display the panel of reservation on click on the reservation button
-          Map.reservationButton.click(function () {
-              console.log(selectedStation[0]); //idk why that doesn't works ...
-                if (availableBikes > 0) {
-                    Map.reservationPanel.css('display', 'block');
-                    Map.availableBikes.text(`Il y a ${station.available_bikes} bicloo(s) disponible(s) à réserver`);
-                } else {
-                    Map.availableBikes.text('Il n\' y a aucun bicloo disponible dans cette station');
-                    Map.reservationButton.css('display', 'none');
-                    Map.reservationPanel.css('display', 'none');
-                }
-                // On click on a marker, smooth scroll to the reservation panel for a better experience for mobile devices
-                $('html, body').animate({
+            // Display the panel of reservation on click on the reservation button
+            Map.reservationButton.click(function () {
+              //console.log(stationName); OK
+              if (stationAvailableBikes > 0) {
+                Map.reservationPanel.css('display', 'block');
+                Map.availableBikes.text(`Il y a ${stationAvailableBikes} bicloo(s) disponible(s) à réserver`);
+              } else {
+                Map.availableBikes.text('Il n\' y a aucun bicloo disponible dans cette station, veuillez sélectionner une nouvelle station');
+                Map.reservationButton.css('display', 'none');
+                Map.reservationPanel.css('display', 'none');
+              }
+              // On click on a marker, smooth scroll to the reservation panel for a better experience for mobile devices
+              $('html, body').animate({
                 scrollTop: Map.reservationPanel.offset().top},
                 'slow'
-                );
-          });
+              );
+            });
+              // Register reservation on validation
+              Map.submitButton.click(function () {
+                sessionStorage.setItem('name', stationName);
+                Map.reservationPanel.css('display', 'none');
+                Map.reservationButton.css('display', 'none');
+                Map.availableBikes.text('Vous avez réservé un bicloo à cette station');
+                Map.currentReservMessage.text(`Vous avez réservé un bicloo à la station ${sessionStorage.name} pour`);
+                Map.cancelReservation.show();
+                // Reset a precedent countdown if there was a precedent reservation
+                clearInterval(Map.x);
+                // Start a new countdow for the current reservation
+                Map.countDown();
 
-                    // Register reservation on validation
-                    Map.submitButton.click(function () {
-                        sessionStorage.setItem('name', station.name);
-                        Map.reservationPanel.css('display', 'none');
-                        Map.reservationButton.css('display', 'none');
-                        Map.availableBikes.text('Vous avez réservé un bicloo à cette station');
-                        Map.currentReservMessage.text(`Vous avez réservé un bicloo à la station ${sessionStorage.name} pour`);
-                        Map.cancelReservation.show();
-                        // Reset a precedent countdown if there was a precedent reservation
-                        clearInterval(Map.x);
-                        // Start a new countdow for the current reservation
-                        Map.countDown();
+                // Annulation of the reservation
+                Map.cancelReservation.click(function () {
+                  clearInterval(Map.x);
+                  Map.currentReservMessage.text('');
+                  Map.timerText.text('Réservation annulée');
+                  Map.cancelReservation.hide();
+                })
+              });
+            });
 
-                        // Annulation of the reservation
-                        Map.cancelReservation.click(function () {
-                            clearInterval(Map.x);
-                            Map.currentReservMessage.text('');
-                            Map.timerText.text('Réservation annulée');
-                            Map.cancelReservation.hide();
-                        })
-                });
-            })
+          })
         },
 
     }
