@@ -35,7 +35,9 @@ const Map = {
     infoStationPanel: $('.info-station'),
     reservationButton: $('.reservation-button'),
     submitButton: $('#submit'),
-    formSpan: $('#form'),
+    formSpan: $('.form'),
+    //inputPrenom= $('#prenomForm').value,
+    //inputNom= $('#nomForm').value,
     currentReservMessage: $('.footer-text'),
     cancelReservation: $('.cancel'),
     timerText: $('.timer-text'),
@@ -218,6 +220,9 @@ const Map = {
             // Display the panel of reservation on click on the reservation button
             Map.reservationButton.click(function () {
               //console.log(stationName); OK
+              let inputPrenom= $('#prenomForm').value;
+              let inputNom= $('#nomForm').value;
+              console.log(inputPrenom);
               if (stationAvailableBikes > 0) {
                 Map.reservationPanel.css('display', 'block');
                 Map.availableBikes.text(`Il y a ${stationAvailableBikes} bicloo(s) disponible(s) à réserver`);
