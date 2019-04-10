@@ -213,6 +213,8 @@ const Map = {
             Map.stationName.fadeIn('slow');
             Map.stationAddress.fadeIn('slow');
             Map.availableBikes.fadeIn('slow');
+            Map.inputPrenom[0].value = localStorage.getItem('prenom');
+            Map.inputNom[0].value = localStorage.getItem('nom');
             // scroll vers le pânneau d'informations
             $('html, body').animate({
                 scrollTop: Map.infoStationPanel.offset().top},'slow'
@@ -222,6 +224,8 @@ const Map = {
               //console.log(stationName); OK
               //console.log(Map.inputPrenom[0].value); OK
               if (Map.inputPrenom[0].value !== "" && Map.inputNom[0].value !== "" ) {
+                  localStorage.setItem('prenom', Map.inputPrenom[0].value);
+                  localStorage.setItem('nom', Map.inputNom[0].value);
                   if (stationAvailableBikes > 0) {
                     console.log(Map.inputPrenom[0].value);
                     Map.reservationPanel.css('display', 'block');
@@ -231,13 +235,14 @@ const Map = {
                     Map.reservationButton.css('display', 'none');
                     Map.reservationPanel.css('display', 'none');
                   }
-                  // On click on a marker, smooth scroll to the reservation panel for a better experience for mobile devices
+                  // Effectue un scroll doux vers le panneau de réservation
                   $('html, body').animate({
                     scrollTop: Map.reservationPanel.offset().top},
                     'slow'
                   );
                 }
               else {
+                Map.reservationPanel.css('display', 'none');
                 alert("Veuillez remplir les champs Nom et Prénom.");
               }
             });
