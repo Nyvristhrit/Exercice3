@@ -36,8 +36,8 @@ const Map = {
     reservationButton: $('.reservation-button'),
     submitButton: $('#submit'),
     formSpan: $('.form'),
-    //inputPrenom= $('#prenomForm').value,
-    //inputNom= $('#nomForm').value,
+    inputPrenom: $('#prenomForm'),
+    inputNom: $('#nomForm'),
     currentReservMessage: $('.footer-text'),
     cancelReservation: $('.cancel'),
     timerText: $('.timer-text'),
@@ -217,25 +217,29 @@ const Map = {
             $('html, body').animate({
                 scrollTop: Map.infoStationPanel.offset().top},'slow'
             );
-            // Display the panel of reservation on click on the reservation button
+            // Ajoute le panneau de réservation si des vélos sont disponibles et si les champs sont remplis
             Map.reservationButton.click(function () {
               //console.log(stationName); OK
-              let inputPrenom= $('#prenomForm').value;
-              let inputNom= $('#nomForm').value;
-              console.log(inputPrenom);
-              if (stationAvailableBikes > 0) {
-                Map.reservationPanel.css('display', 'block');
-                Map.availableBikes.text(`Il y a ${stationAvailableBikes} bicloo(s) disponible(s) à réserver`);
-              } else {
-                Map.availableBikes.text('Il n\' y a aucun bicloo disponible dans cette station, veuillez sélectionner une nouvelle station');
-                Map.reservationButton.css('display', 'none');
-                Map.reservationPanel.css('display', 'none');
+              //console.log(Map.inputPrenom[0].value); OK
+              if (Map.inputPrenom[0].value !== "" && Map.inputNom[0].value !== "" ) {
+                  if (stationAvailableBikes > 0) {
+                    console.log(Map.inputPrenom[0].value);
+                    Map.reservationPanel.css('display', 'block');
+                    Map.availableBikes.text(`Il y a ${stationAvailableBikes} bicloo(s) disponible(s) à réserver`);
+                  } else {
+                    Map.availableBikes.text('Il n\' y a aucun bicloo disponible dans cette station, veuillez sélectionner une nouvelle station');
+                    Map.reservationButton.css('display', 'none');
+                    Map.reservationPanel.css('display', 'none');
+                  }
+                  // On click on a marker, smooth scroll to the reservation panel for a better experience for mobile devices
+                  $('html, body').animate({
+                    scrollTop: Map.reservationPanel.offset().top},
+                    'slow'
+                  );
+                }
+              else {
+                alert("Veuillez remplir les champs Nom et Prénom.");
               }
-              // On click on a marker, smooth scroll to the reservation panel for a better experience for mobile devices
-              $('html, body').animate({
-                scrollTop: Map.reservationPanel.offset().top},
-                'slow'
-              );
             });
               // Register reservation on validation
               Map.submitButton.click(function () {
