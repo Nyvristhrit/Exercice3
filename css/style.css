@@ -493,9 +493,10 @@ footer .timer-text {
 
 /* canvas */
 
-#canvas-sign {
-    border: solid 2px #45505b;
+#signature-pad {
+    border: solid 1px #45505b;
     background-color: white;
-    height: 150px;
-    width: 99%;
+    cursor: pointer;
+    margin-left: 25px;
+    margin-bottom: 8px;
 }
