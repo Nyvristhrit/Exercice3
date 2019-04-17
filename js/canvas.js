@@ -80,9 +80,7 @@ function init_Sign_Canvas() {
 
    clearBtn.on("click", function(e) {
      canvasContext.clearRect(0, 0, canvas.width(), canvas.height());
-     var x = [];
-     var y = [];
-     var t = [];
+     canvasContext.beginPath();
    });
 
 }
@@ -91,83 +89,3 @@ function init_Sign_Canvas() {
 $(document).ready(function () {
     init_Sign_Canvas();
 });
-
-
-
-
-
-
-
-
-
-/*const validBtn = $("submit");
-const clearBtn = $("#clear");
-const canvas = $("canvas");
-const ctx = canvas[0].getContext("2d");
-
-// On stocke la position de la souris dans un array lors du "mousedown"
-canvas.mousedown(function(e){
-  var mouseX = e.pageX - this.offsetLeft;
-  var mouseY = e.pageY - this.offsetTop;
-
-  paint = true;
-  addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
-  redraw();
-});
-
-canvas.mousemove(function(e){
-  if(paint){
-    addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
-    redraw();
-  }
-});
-
-//la souris n'est pas pressée donc on stoppe le addClick
-canvas.mouseup(function(e){
-  paint = false;
-});
-
-//la souris quitte le canvas donc on stoppe le addClick
-canvas.mouseleave(function(e){
-  paint = false;
-});
-
-//On créer un array pour chaque position de la souris
-var clickX = new Array();
-var clickY = new Array();
-var clickDrag = new Array();
-var paint;
-
-function addClick(x, y, dragging)
-{
-  clickX.push(x);
-  clickY.push(y);
-  clickDrag.push(dragging);
-}
-
-//Affiche le trait
-function redraw(){
-  ctx.clearRect(0, 0, canvas.width(), canvas.height()); // Clears the canvas
-
-  ctx.strokeStyle = "grey";
-  ctx.lineJoin = "round";
-  ctx.lineWidth = 3;
-
-  for(var i=0; i < clickX.length; i++) {
-    ctx.beginPath();
-    if(clickDrag[i] && i){
-      ctx.moveTo(clickX[i-1], clickY[i-1]);
-     }else{
-       ctx.moveTo(clickX[i]-1, clickY[i]);
-     }
-     ctx.lineTo(clickX[i], clickY[i]);
-     ctx.closePath();
-     ctx.stroke();
-  }
-}
-
-// Efface le canvas au click sur clear
-clearBtn.click(function () {
-    ctx.clearRect(0, 0, canvas.width(), canvas.height());
-    validBtn.css("display","none");
-  });*/
