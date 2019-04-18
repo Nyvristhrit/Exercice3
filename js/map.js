@@ -1,6 +1,32 @@
-var Map = {
+function convert_to_geojson(json){
+    console.log(json)
+    geojson = {}
+    geojson.type = 	"FeatureCollection"
+    geojson.features = []
+
+    json.forEach(function (station) {
+      {
+        station.type = "Feature",
+        station.geometry = {
+          "type": "Point",
+          "coordinates": [station.position.lng, station.position.lat]
+        },
+        station.properties = {
+          "name": station.name,
+          "address": station.address,
+          "available_bikes": station.available_bikes
+        }
+
+        geojson.features.push(station)
+      }
+    })
+    console.log(geojson)
+    return geojson
+}
+
+const Map = {
     // stockage de l'Api JCDecaux open data dans Map
-    velibApi: 'https://api.jcdecaux.com/vls/v1/stations?contract=nantes&apiKey=93d5179e7169f9d205bbdc2d581d485573a4df83',
+    jcdecauxAPI: 'https://api.jcdecaux.com/vls/v1/stations?contract=nantes&apiKey=93d5179e7169f9d205bbdc2d581d485573a4df83',
     map: null,
     reservationPanel: $('.reservation'),
     stationName: $('.station-name'),
@@ -9,6 +35,9 @@ var Map = {
     infoStationPanel: $('.info-station'),
     reservationButton: $('.reservation-button'),
     submitButton: $('#submit'),
+    formSpan: $('.form'),
+    inputPrenom: $('#prenomForm'),
+    inputNom: $('#nomForm'),
     currentReservMessage: $('.footer-text'),
     cancelReservation: $('.cancel'),
     timerText: $('.timer-text'),
@@ -22,23 +51,14 @@ var Map = {
           style: 'mapbox://styles/nyvristhrit/cjtab00bk119l1fpeoeyybdjt',
           center: [-1.553890, 47.217220],
           zoom: 12.8,
-          scrollZoom: false,
-          showZoom: true
+          showZoom: true,
         });
 
-//Active le panneau de controle afin de pouvoir Zoomer
-        Map.map.addControl(new mapboxgl.NavigationControl());
+    //Active le panneau de controle afin de pouvoir Zoomer et désactive le compas
+        Map.map.addControl(new mapboxgl.NavigationControl({showCompass: false}));
 
         Map.hideCountDownPanel();
-        Map.callApiVelib();
-    },
-
-    // Add a marker clusterer to manage the markers.
-    displayMarkerCluster: function (map, markers) {
-        var markerCluster = new MarkerClusterer(Map.map, markers, {
-            imagePath: 'img/m/m',
-
-        });
+        Map.appelJcdApi();
     },
 
     // when there isn't a current reservation : no countdown, no cancel button
@@ -47,7 +67,7 @@ var Map = {
         Map.cancelReservation.hide();
     },
 
-    // Hide precedent station informations on click on a different station
+    // Masque les informations de la précédente station
     hideInfosStation: function () {
         Map.reservationPanel.fadeOut();
         Map.stationName.hide();
@@ -80,189 +100,181 @@ var Map = {
 
     },
 
-  /*  // Call of the velibAPI, display markers and clusterers, reservation, and countdown
-    callApiVelib: function () {
-        ajaxGet(Map.velibApi, function (reponse) {
-            // Answer in a Javascript array
+    // Appel de l'API JCDecaux, display markers and clusterers, reservation, and countdown
+    appelJcdApi: function () {
+        ajaxGet(Map.jcdecauxAPI, function (reponse) {
+            // On range la réponse dans un tableau stations
             var stations = JSON.parse(reponse);
-            markers = [];
-            // For each station : we create a marker on the map + we define actions on click on this marker
-            stations.forEach(function (station) {
-                //console.log(station.position);
-                var marker = new mapboxgl.Marker({
-                    latitude: station.position.lat,
-                    longitude: station.position.lng,
-                    map: Map.map,
-                    title: station.name,
+            let stations_in_geojson = convert_to_geojson(stations)
+
+            Map.map.on('load', function () {
+                Map.map.addSource("stations", {
+                    type: "geojson",
+                    data: stations_in_geojson,
+                    cluster: true,
+                    clusterMaxZoom: 14, // Max zoom to cluster points on
+                    //clusterRadius: (defaults to 50)
                 });
-                console.log(marker.latitude);
-                markers.push(marker);*/
 
-      // Call of the velibAPI, display markers and clusterers, reservation, and countdown
-      callApiVelib: function () {
-          ajaxGet(Map.velibApi, function (reponse) {
-              // On range la réponse dans un tableau stations
-              var stations = JSON.parse(reponse);
-              // For each station : we create a marker on the map + we define actions on click on this marker
-              Map.map.on('load', function () {
-                stations.forEach(function (station) {
-                  //console.log(station.position); OK
-                  //console.log(station.position.lat); OK
-                    map.addSource('point', {
-                        "type": "geojson",
-                        "data": {
-                            "type": "Point",
-                            "coordinates": [station.position.lat, station.position.lng]
-                        }
-                    });
-
-
-                    map.addLayer({
-                        "id": "point1",
-                        "source": "point",
-                        "type": "circle",
-                        "paint": {
-                            "circle-radius": 10,
-                            "circle-color": "pink"
-                        }
-                      });
-                    });
-                  });
-
-
-                // Display infosStations on click on the marker
-                marker.addListener('click', function () {
-                    Map.hideInfosStation();
-                    Map.reservationButton.css('display', 'block');
-                    Map.stationName.text(station.name);
-                    Map.stationAddress.text('Adresse : ' + station.address);
-                    Map.availableBikes.text('Vélib(s) disponible(s) : ' + station.available_bikes);
-                    Map.stationName.fadeIn('slow');
-                    Map.stationAddress.fadeIn('slow');
-                    Map.availableBikes.fadeIn('slow');
-                    // On click on a marker, smooth scroll to the informations panel for a better experience for mobile devices
-                    $('html, body').animate({
-                        scrollTop: Map.infoStationPanel.offset().top},
-                        'slow'
-                    );
-
-                    // Display the panel of reservation on click on the reservation button
-                    Map.reservationButton.click(function () {
-                        if (station.available_bikes > 0) {
-                            Map.reservationPanel.css('display', 'block');
-                            Map.availableBikes.text('Il y a ' + station.available_bikes + ' vélib(s) disponible(s) à réserver !');
-                        } else {
-                            Map.availableBikes.text('Il n\' y a aucun bicloo disponible dans cette station');
-                            Map.reservationButton.css('display', 'none');
-                            Map.reservationPanel.css('display', 'none');
-                        }
-                        // On click on a marker, smooth scroll to the reservation panel for a better experience for mobile devices
-                        $('html, body').animate({
-                        scrollTop: Map.reservationPanel.offset().top},
-                        'slow'
-                    );
-                    });
-
-                    // Register reservation on validation
-                    Map.submitButton.click(function () {
-                        sessionStorage.setItem('name', station.name);
-                        Map.reservationPanel.css('display', 'none');
-                        Map.reservationButton.css('display', 'none');
-                        Map.availableBikes.text('Vous avez réservé 1 vélib à cette station');
-                        Map.currentReservMessage.text('Vous avez réservé 1 vélib à la station ' + sessionStorage.name + ' pour ');
-                        Map.cancelReservation.show();
-                        // Reset a precedent countdown if there was a precedent reservation
-                        clearInterval(Map.x);
-                        // Start a new countdow for the current reservation
-                        Map.countDown();
-
-                        // Annulation of the reservation
-                        Map.cancelReservation.click(function () {
-                            clearInterval(Map.x);
-                            Map.currentReservMessage.text('');
-                            Map.timerText.text('Réservation annulée');
-                            Map.cancelReservation.hide();
-                        })
-                    })
+                Map.map.addLayer({
+                    id: "clusters",
+                    type: "circle",
+                    source: "stations",
+                    filter: ["has", "point_count"],
+                    paint: {
+                        "circle-color": [
+                            "step",
+                            ["get", "point_count"],
+                            "#FF8300",
+                            100,
+                            "grey"
+                        ],
+                        "circle-radius": [
+                            "step",
+                            ["get", "point_count"],
+                            25,
+                            100,
+                            50
+                        ]
+                    }
                 });
-            })
-            Map.displayMarkerCluster(map, markers);
-        })
-    },
 
-}
+                Map.map.addLayer({
+                    id: "cluster-count",
+                    type: "symbol",
+                    interactive: true,
+                    source: "stations",
+                    filter: ["has", "point_count"],
+                    layout: {
+                        "text-field": "{point_count_abbreviated}",
+                        "text-font": ["Open Sans Regular", "Arial Unicode MS Bold"],
+                        "text-size": 13
+                    },
+                    paint: {
+                      "text-color": "white"
+                    }
+                });
 
+                Map.map.addLayer({
+                    id: "unclustered-point",
+                    type: "circle",
+                    source: "stations",
+                    filter: ["!", ["has", "point_count"]],
+                    paint: {
+                        "circle-color": "#FF8300",
+                        "circle-radius": 8,
+                        "circle-stroke-width": 2,
+                        "circle-stroke-color": "#fff"
+                    }
+                });
+
+                // Au click sur un cluster effectue un Zoom
+                Map.map.on('click', 'clusters', function (e) {
+                  var features = Map.map.queryRenderedFeatures(e.point, { layers: ['clusters'] });
+                  var clusterId = features[0].properties.cluster_id;
+                    Map.map.getSource('stations').getClusterExpansionZoom(clusterId, function (err, zoom) {
+                      if (err)
+                      return;
+
+                    Map.map.easeTo({
+                      center: features[0].geometry.coordinates,
+                      zoom: zoom
+                    });
+              });
+          });
+          // Définit l'apparence du pointer de la souris au survol de ceux ci
+          Map.map.on('click', 'unclustered-point', function (e) {
+          Map.map.flyTo({center: e.features[0].geometry.coordinates});
+          });
+          Map.map.on('mouseenter', 'unclustered-point', function () {
+          Map.map.getCanvas().style.cursor = 'pointer';
+          });
+          Map.map.on('mouseleave', 'unclustered-point', function () {
+          Map.map.getCanvas().style.cursor = '';
+          });
+          Map.map.on('mouseenter', 'clusters', function () {
+          Map.map.getCanvas().style.cursor = 'pointer';
+          });
+          Map.map.on('mouseleave', 'clusters', function () {
+          Map.map.getCanvas().style.cursor = '';
+          });
+        });
+
+          Map.map.on('click', 'unclustered-point', function (e) {
+            const stationName = e.features[0].properties.name;
+            const stationAddress = e.features[0].properties.address;
+            const stationAvailableBikes = e.features[0].properties.available_bikes;
+            Map.hideInfosStation();
+            Map.reservationButton.css('display', 'block');
+            Map.formSpan.css('display', 'block');
+            Map.stationName.text(e.features[0].properties.name);
+            Map.stationAddress.text(`Adresse : ${e.features[0].properties.address}`);
+            Map.availableBikes.text(`Bicloo(s) disponible(s) : ${e.features[0].properties.available_bikes}`);
+            Map.stationName.fadeIn('slow');
+            Map.stationAddress.fadeIn('slow');
+            Map.availableBikes.fadeIn('slow');
+            Map.inputPrenom[0].value = localStorage.getItem('prenom');
+            Map.inputNom[0].value = localStorage.getItem('nom');
+            // scroll vers le pânneau d'informations
+            $('html, body').animate({
+                scrollTop: Map.infoStationPanel.offset().top},'slow'
+            );
+            // Ajoute le panneau de réservation si des vélos sont disponibles et si les champs sont remplis
+            Map.reservationButton.click(function () {
+              //console.log(stationName); OK
+              //console.log(Map.inputPrenom[0].value); OK
+              if (Map.inputPrenom[0].value !== "" && Map.inputNom[0].value !== "" ) {
+                  localStorage.setItem('prenom', Map.inputPrenom[0].value);
+                  localStorage.setItem('nom', Map.inputNom[0].value);
+                  if (stationAvailableBikes > 0) {
+                    console.log(Map.inputPrenom[0].value);
+                    Map.reservationPanel.css('display', 'block');
+                    Map.availableBikes.text(`Il y a ${stationAvailableBikes} bicloo(s) disponible(s) à réserver`);
+                  } else {
+                    Map.availableBikes.text('Il n\' y a aucun bicloo disponible dans cette station, veuillez sélectionner une nouvelle station');
+                    Map.reservationButton.css('display', 'none');
+                    Map.reservationPanel.css('display', 'none');
+                  }
+                  // Effectue un scroll doux vers le panneau de réservation
+                  $('html, body').animate({
+                    scrollTop: Map.reservationPanel.offset().top},
+                    'slow'
+                  );
+                }
+              else {
+                Map.reservationPanel.css('display', 'none');
+                alert("Veuillez remplir les champs Nom et Prénom.");
+              }
+            });
+              // Register reservation on validation
+              Map.submitButton.click(function () {
+                sessionStorage.setItem('name', stationName);
+                Map.reservationPanel.css('display', 'none');
+                Map.reservationButton.css('display', 'none');
+                Map.availableBikes.text('Vous avez réservé un bicloo à cette station');
+                Map.currentReservMessage.text(`Vous avez réservé un bicloo à la station ${sessionStorage.name} pour`);
+                Map.cancelReservation.show();
+                // Reset a precedent countdown if there was a precedent reservation
+                clearInterval(Map.x);
+                // Start a new countdow for the current reservation
+                Map.countDown();
+
+                // Annulation of the reservation
+                Map.cancelReservation.click(function () {
+                  clearInterval(Map.x);
+                  Map.currentReservMessage.text('');
+                  Map.timerText.text('Réservation annulée');
+                  Map.cancelReservation.hide();
+                })
+              });
+            });
+
+          })
+        },
+
+    }
 
 $(function () {
     Map.init();
 
 })
-
-/*var map = new mapboxgl.Map({
-    container: 'map',
-    style: 'mapbox://styles/mapbox/streets-v8',
-    center: [-1.553890, 47.217220],
-    zoom: 12.8
-});
-
-map.on('load', function () {
-
-    // Add a source and layer displaying a point which will be animated in a circle.
-    map.addSource('point', {
-        "type": "geojson",
-        "data": {
-          "type": "FeatureCollection",
-          "features": [
-            { "type": "Feature", "geometry": { "type": "Point", "coordinates": [-1.553890,47.217220, 0.0 ] } },
-            { "type": "Feature", "geometry": { "type": "Point", "coordinates": [-1.553899, 47.217229, 105.5 ] } }
-          ]
-        }
-    });
-
-
-
-    map.addLayer({
-        "id": "point",
-        "source": "point",
-        "type": "circle",
-        "paint": {
-            "circle-radius": initialRadius,
-            "circle-radius-transition": {duration: 0},
-            "circle-opacity-transition": {duration: 0},
-            "circle-color": "green"
-        }
-    });
-
-    map.addLayer({
-        "id": "point1",
-        "source": "point",
-        "type": "circle",
-        "paint": {
-            "circle-radius": initialRadius,
-            "circle-color": "black"
-        }
-    });
-
-
-    function animateMarker(timestamp) {
-        setTimeout(function(){
-            requestAnimationFrame(animateMarker);
-
-            radius += (maxRadius - radius) / framesPerSecond;
-            opacity -= ( .9 / framesPerSecond );
-
-            map.setPaintProperty('point', 'circle-radius', radius);
-            map.setPaintProperty('point', 'circle-opacity', opacity);
-
-            if (opacity <= 0) {
-                radius = initialRadius;
-                opacity = initialOpacity;
-            }
-
-        }, 1000 / framesPerSecond);
-
-    }
-
-    // Start the animation.
-    animateMarker(0);
-});*/
