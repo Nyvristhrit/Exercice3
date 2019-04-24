@@ -16,6 +16,7 @@ header {
     justify-content: center;
     align-items: center;
     border-bottom: : solid 5px #ffc17f;
+    width: 100%;
 }
 
 h1 {
@@ -29,6 +30,56 @@ header i {
     font-size: 2.5em;
     margin: 40px;
     color: white;
+}
+
+.navlink {
+font-size: 1.5em;
+font-weight: 600;
+margin: .4em;
+padding: 0.8em 0.4em 0.5em 0.4em;
+cursor: pointer;
+text-decoration: none;
+color: #ffff;
+display: inline-block;
+vertical-align: middle;
+transform: perspective(1px) translateZ(0);
+box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+position: relative;
+overflow: hidden;
+}
+
+.navlink:hover {
+font-size: 1.5em;
+margin: .4em;
+padding: 0.8em 0.4em 0.5em 0.4em;
+cursor: pointer;
+text-decoration: none;
+color: #ffff;
+}
+
+.navlink:hover::before {
+transform: translateY(0px);
+}
+
+.navlink::before {
+content: "";
+position: absolute;
+z-index: -1;
+left: 0;
+right: 0;
+bottom: 0;
+background: #ffff;
+height: 5px;
+transform: translateY(5px);
+transition-property: transform;
+transition-duration: 0.2s;
+transition-timing-function: ease-out;
+}
+
+#navbar img {
+  width: 250px;
+  padding-top:10px;
+  left: 10px;
 }
 
 @media screen and (max-width: 860px) {
