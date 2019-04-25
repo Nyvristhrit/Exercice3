@@ -1,5 +1,5 @@
 var Slider = {
-    // Define current slide
+    // Définit le slide actuel
     currentIndex: 0,
 
     init: function () {
@@ -10,7 +10,7 @@ var Slider = {
         Slider.changeSlideOnKeypress();
     },
 
-    // Display the current slide
+    // Affiche le slide en cours
     activeSlide: function () {
         var slides = $('.fade');
         var slide = slides.eq(Slider.currentIndex);
@@ -18,7 +18,7 @@ var Slider = {
         slide.css('display', 'flex');
     },
 
-    // Define the next slide as the current slide
+    // Définit le prochain slide
     indexPlus: function () {
         var slides = $('.fade');
         var slidesNumber = slides.length;
@@ -28,7 +28,7 @@ var Slider = {
         }
     },
 
-    // Define the previous slide as the the current slide
+    // Définit le précédent slide
     indexMinus: function () {
         var slides = $('.fade');
         var slidesNumber = slides.length;
@@ -38,7 +38,7 @@ var Slider = {
         }
     },
 
-    // automatic and controllable slide function
+    // Rend le slider automatique gère les bouton play/pause
     autoSlide: function () {
         var play = $('.play');
         var stop = $('.stop');
@@ -58,14 +58,14 @@ var Slider = {
 
     },
 
-    // automatic slider on load
+    // Démarre le slider au chargement
     playAutoClick: function () {
         var play = $('.play');
         play.trigger('click');
         play.css("visibility", "hidden");
     },
 
-    // next slide on click on the ">" button
+    // Prochaine slide au clique sur le chevron
     nextSlideOnClick: function () {
         var next = $('.next');
         next.click(function () {
@@ -74,7 +74,7 @@ var Slider = {
         });
     },
 
-    // previous slide on click on the "<" button
+    // précedente slide au clique sur le chevron
     prevSlideOnClick: function () {
         var prev = $('.prev');
         prev.click(function () {
@@ -83,7 +83,7 @@ var Slider = {
         });
     },
 
-    // previous / next slide with keyboard
+    // Ajoute les controles clavier sur le slider
     changeSlideOnKeypress: function () {
         $('body').keydown(function (e) {
             if (e.which === 39) {
