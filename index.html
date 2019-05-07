@@ -17,9 +17,9 @@
 <body>
 
     <header id="navbar">
-        <img src="img/logoNantes.png" alt="Logo Nantes">
+        <a href="#"></a><img src="img/logoNantes.png" alt="Logo Nantes"></a>
         <span class="navlink">
-            <a class="link" href="#navbar">Accueil</a>
+            <a class="link" href="#home">Accueil</a>
             <a class="link" href="#map">Carte & Réservation</a>
             <i class="fas fa-bicycle"></i>
         </span>
@@ -27,8 +27,9 @@
 
     <section id="tutoriel">
         <div class="container">
+            <span id="home"></span>
             <h1>Découvrez comment réserver votre Bicloo :</h1>
-            <p>
+            <p class="introduction">
                 N'hésitez pas à consulter le diaporama ci-dessous pour connaître toutes les étapes de réservation
                 d'un
                 Bicloo dans
@@ -89,7 +90,6 @@
         <i class="fa fa-arrow-alt-circle-left prev swipe hover-shadow"></i>
         <i class="fas fa-play play"></i>
         <i class="fas fa-pause stop"></i>
-        <!-- <button class="play">| |</button>  -->
     </section>
 
     <section id="reserv-map">
@@ -100,12 +100,11 @@
                 <p class="station-name">Sélectionner une station</p>
                 <p class="station-address"></p>
                 <p class="available-bikes"></p>
-                <span class="form">
+                <div class="form">
                     <form>
                         <input id="prenomForm" type="text" placeholder="Prénom" value="" required>
                         <input id="nomForm" type="text" placeholder="Nom" value="" required>
-                </span>
-                <!--<input class="reservation-button" type="submit">-->
+                </div>
                 </form>
                 <button class="reservation-button">Réserver</button>
             </div>
