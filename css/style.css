@@ -9,7 +9,9 @@ button {
 /* ------------------- Header --------------------- */
 
 header {
-    height: 100px;
+    display: flex;
+    justify-content: space-between;
+    height: 90px;
     background-color: #ff8300;
     display: flex;
     flex-direction: row;
@@ -17,69 +19,72 @@ header {
     align-items: center;
     border-bottom: : solid 5px #ffc17f;
     width: 100%;
-}
-
-h1 {
-    font-family: 'Roboto', cursive;
-    color: white;
-    text-transform: uppercase;
-    font-weight: 700;
+    margin-bottom: 50px;
 }
 
 header i {
-    font-size: 2.5em;
-    margin: 40px;
+    font-size: 2em;
     color: white;
+    vertical-align: middle;
 }
 
 .navlink {
-font-size: 1.5em;
-font-weight: 600;
-margin: .4em;
-padding: 0.8em 0.4em 0.5em 0.4em;
-cursor: pointer;
-text-decoration: none;
-color: #ffff;
-display: inline-block;
-vertical-align: middle;
-transform: perspective(1px) translateZ(0);
-box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-position: relative;
-overflow: hidden;
+    display: inline-block;
+    position: absolute;
+    right: 50px;
 }
 
-.navlink:hover {
-font-size: 1.5em;
-margin: .4em;
-padding: 0.8em 0.4em 0.5em 0.4em;
-cursor: pointer;
-text-decoration: none;
-color: #ffff;
+.link {
+    text-transform: uppercase;
+    font-size: 1.5em;
+    font-weight: 500;
+    margin: .4em .8em .4em .4em;
+    padding: 0.8em 0.4em 0.5em 0.4em;
+    cursor: pointer;
+    text-decoration: none;
+    color: #ffff;
+    display: inline-block;
+    vertical-align: middle;
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    position: relative;
+    overflow: hidden;
 }
 
-.navlink:hover::before {
-transform: translateY(0px);
+.link:hover {
+    font-size: 1.5em;
+    margin: margin: .4em .8em .4em .4em;
+    ;
+    padding: 0.8em 0.4em 0.5em 0.4em;
+    cursor: pointer;
+    text-decoration: none;
+    color: #ffff;
 }
 
-.navlink::before {
-content: "";
-position: absolute;
-z-index: -1;
-left: 0;
-right: 0;
-bottom: 0;
-background: #ffff;
-height: 5px;
-transform: translateY(5px);
-transition-property: transform;
-transition-duration: 0.2s;
-transition-timing-function: ease-out;
+.link:hover::before {
+    transform: translateY(0px);
+}
+
+.link::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #ffff;
+    height: 5px;
+    transform: translateY(5px);
+    transition-property: transform;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out;
 }
 
 #navbar img {
-  width: 250px;
-  padding-top:10px;
-  left: 10px;
+    position: absolute;
+    width: 200px;
+    left: 50px;
+    vertical-align: middle;
 }
 
 @media screen and (max-width: 860px) {
@@ -101,6 +106,14 @@ transition-timing-function: ease-out;
 
 /* -------------------- Tutoriel ----------------- */
 
+h1 {
+    font-family: 'Roboto', cursive;
+    text-transform: uppercase;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 50px;
+}
+
 #tutoriel {
     color: grey;
     position: relative;
@@ -112,16 +125,6 @@ transition-timing-function: ease-out;
     max-width: 900px;
 }
 
-#tutoriel h2 {
-    text-align: center;
-    font-size: 30px;
-    color: grey;
-    margin: 0;
-    padding-top: 70px;
-    margin-bottom: 50px;
-    font-weight: 300;
-}
-
 #tutoriel h3 {
     color: grey;
     text-align: center;
@@ -129,42 +132,43 @@ transition-timing-function: ease-out;
 }
 
 #tutoriel p {
-    text-align: center;
+    text-align: center !important;
     margin-bottom: 70px;
     max-width: 600px;
     padding-bottom: 20px;
+    color: violet
 }
 
 @media screen and (max-width: 860px) {
-  #tutoriel h2 {
-      text-align: center;
-      font-size: 30px;
-      color: grey;
-      margin: 0;
-      padding-top: 50px;
-      padding-bottom: 50px;
-      font-weight: 300;
+    #tutoriel h2 {
+        text-align: center;
+        font-size: 30px;
+        color: grey;
+        margin: 0;
+        padding-top: 50px;
+        padding-bottom: 50px;
+        font-weight: 300;
     }
-  }
+}
 
 
 @media screen and (max-width: 480px) {
-  #tutoriel h2 {
-      text-align: center;
-      font-size: 30px;
-      color: grey;
-      margin: 0;
-      padding-top: 40px;
-      margin-bottom: 30px;
-      font-weight: 300;
-  }
+    #tutoriel h2 {
+        text-align: center;
+        font-size: 30px;
+        color: grey;
+        margin: 0;
+        padding-top: 40px;
+        margin-bottom: 30px;
+        font-weight: 300;
+    }
 
-  #tutoriel p {
-      text-align: center;
-      margin-bottom: 70px;
-      max-width: 80vw;
-      padding-bottom: 20px;
-  }
+    #tutoriel p {
+        text-align: center;
+        margin-bottom: 70px;
+        max-width: 80vw;
+        padding-bottom: 20px;
+    }
 }
 
 
@@ -222,6 +226,7 @@ transition-timing-function: ease-out;
     from {
         opacity: .4
     }
+
     to {
         opacity: 1
     }
@@ -231,6 +236,7 @@ transition-timing-function: ease-out;
     from {
         opacity: .4
     }
+
     to {
         opacity: 1
     }
@@ -240,75 +246,75 @@ transition-timing-function: ease-out;
 /* Tutorial slider controls */
 
 @keyframes hover {
-	50% {
-		transform: translateY(-3px);
-	}
+    50% {
+        transform: translateY(-3px);
+    }
 
-	100% {
-		transform: translateY(-10px);
-	}
+    100% {
+        transform: translateY(-10px);
+    }
 }
 
 @keyframes hover-shadow {
-	0% {
-		transform: translateY(10px);
-	}
+    0% {
+        transform: translateY(10px);
+    }
 
-	50% {
-		transform: translateY(3px);
-	}
+    50% {
+        transform: translateY(3px);
+    }
 
 
-	100% {
-		transform: translateY(5px);
-	}
+    100% {
+        transform: translateY(5px);
+    }
 }
 
 .hover-shadow {
-	display: inline-block;
-	position: relative;
-	transition-duration: .3s;
-	transition-property: transform;
-  background: #ff8300;
-  color: #fff;
-  border-radius: 7px;
-  box-shadow: 0 5px #ca6623e6;
-  font-size: 2em;
-  padding: 5px;
-  }
+    display: inline-block;
+    position: relative;
+    transition-duration: .3s;
+    transition-property: transform;
+    background: #ff8300;
+    color: #fff;
+    border-radius: 7px;
+    box-shadow: 0 5px #ca6623e6;
+    font-size: 2em;
+    padding: 5px;
+}
 
 .hover-shadow:before {
-  z-index: -1;
-  top: 100%;
-  left: 5%;
-  height: 10px;
-  width: 90%;
-	transition-duration: .3s;
-	transition-property: transform;
-	}
+    z-index: -1;
+    top: 100%;
+    left: 5%;
+    height: 10px;
+    width: 90%;
+    transition-duration: .3s;
+    transition-property: transform;
+}
 
 .hover-shadow:hover {
-	transform: translateY(-10px);
-	animation-name: hover;
-	animation-duration: 1.5s;
-	animation-delay: .3s;
-	animation-timing-function: linear;
-	animation-iteration-count: infinite;
-	animation-direction: alternate;
-  background: #ca6623e6;
-  box-shadow: none;
-  cursor: pointer;
-	}
+    transform: translateY(-10px);
+    animation-name: hover;
+    animation-duration: 1.5s;
+    animation-delay: .3s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    background: #ca6623e6;
+    box-shadow: none;
+    cursor: pointer;
+}
 
 .hover-shadow:hover:before {
-	transform: translateY(10px);
-	animation-name: hover-shadow;
-	animation-duration: 1.5s;
-	animation-delay: .3s;
-	animation-timing-function: linear;
-	animation-iteration-count: infinite;
-	animation-direction: alternate;
-	}
+    transform: translateY(10px);
+    animation-name: hover-shadow;
+    animation-duration: 1.5s;
+    animation-delay: .3s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
 
 .prev {
     position: absolute;
@@ -322,8 +328,7 @@ transition-timing-function: ease-out;
     top: 45%;
 }
 
-.play
-{
+.play {
     position: absolute;
     right: 50%;
     bottom: 10px;
@@ -335,12 +340,11 @@ transition-timing-function: ease-out;
 }
 
 .play:hover {
-  cursor: pointer;
-  opacity: 0.7;
+    cursor: pointer;
+    opacity: 0.7;
 }
 
-.stop
-{
+.stop {
     position: absolute;
     right: 50%;
     bottom: 10px;
@@ -352,8 +356,8 @@ transition-timing-function: ease-out;
 }
 
 .stop:hover {
-  cursor: pointer;
-  opacity: 0.7;
+    cursor: pointer;
+    opacity: 0.7;
 }
 
 
@@ -361,6 +365,7 @@ transition-timing-function: ease-out;
     .stop {
         left: 10%;
     }
+
     .play {
         right: 10%;
     }
@@ -368,12 +373,13 @@ transition-timing-function: ease-out;
 
 @media screen and (max-width: 480px) {
     .stop {
-      left: 45%;
-      right: 45%;
+        left: 45%;
+        right: 45%;
     }
+
     .play {
-      left: 45%;
-      right: 45%;
+        left: 45%;
+        right: 45%;
     }
 }
 
@@ -388,6 +394,7 @@ transition-timing-function: ease-out;
     #reserv-map {
         flex-direction: column;
     }
+
     #map {
         height: 300px;
         margin: 15px;
@@ -438,14 +445,16 @@ aside {
 .info-station p {
     padding-left: 15px;
     padding-right: 15px;
-    padding-bottom: 0; padding-top: 0;
+    padding-bottom: 0;
+    padding-top: 0;
     margin: 10px;
 }
 
 
 /* reservation buttons */
 
-#reserv-map button, .cancel {
+#reserv-map button,
+.cancel {
     font-weight: bold;
     font-size: 15px;
     padding: 10px;
@@ -458,17 +467,17 @@ aside {
 }
 
 .form {
-  display: none;
-  text-align: center;
-  padding-top: 15px;
-  padding-left: 10px;
-  padding-right: 10px;
+    display: none;
+    text-align: center;
+    padding-top: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .form input {
-  border-radius: 5px;
-  border: none;
-  padding: 5px;
+    border-radius: 5px;
+    border: none;
+    padding: 5px;
 }
 
 .info-station button {
