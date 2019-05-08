@@ -1,8 +1,10 @@
 html,
 body,
 button {
-    margin: 0 auto;
+    margin: 0;
     font-family: 'Roboto', sans-serif;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 
@@ -18,7 +20,7 @@ header {
     justify-content: center;
     align-items: center;
     border-bottom: : solid 5px #ffc17f;
-    width: 100%;
+    width: 100vw;
     margin-bottom: 50px;
 }
 
@@ -118,11 +120,12 @@ header i:hover {
     }
 
     .link {
-        font-size: 1em;
+        font-size: 1.2em;
+
     }
 
     .link:hover {
-        font-size: 1em;
+        font-size: 1.2em;
     }
 
     .link::before {
@@ -136,11 +139,35 @@ header i:hover {
     }
 }
 
-@media screen and (max-width: 480px) {
-    h1 {
-        font-size: 20px;
+@media screen and (max-width: 530px) {
+
+    header i {
+        display: none !important;
+    }
+
+    .navlink {
+        right: 10px;
+        text-align: right;
+    }
+
+    .link {
+        font-size: 0.8em;
         margin: 0;
-        text-align: center;
+    }
+
+    .link:hover {
+        font-size: 0.8em;
+        margin: 0;
+    }
+
+    .link::before {
+        height: 2px;
+        transform: translateY(2px);
+    }
+
+    #navbar img {
+        width: 110px;
+        left: 10px;
     }
 }
 
@@ -191,26 +218,39 @@ h1 {
 
 
 @media screen and (max-width: 480px) {
-    #tutoriel h2 {
+    h1 {
         text-align: center;
-        font-size: 30px;
+        font-size: 1.5em;
         color: grey;
         margin: 0;
-        padding-top: 40px;
-        margin-bottom: 30px;
-        font-weight: 300;
+        margin-bottom: 20px;
+        font-weight: 500;
+        padding-top: 10px;
+    }
+
+    .introduction {
+        margin-left: 10vw !important;
     }
 
     #tutoriel p {
-        text-align: center;
-        margin-bottom: 70px;
+        text-align: justify;
+        margin-bottom: 55px;
         max-width: 80vw;
         padding-bottom: 20px;
+        font-size: 0.9em;
+        font-weight: 300;
+    }
+
+    #tutoriel h3 {
+        color: grey;
+        text-align: center;
+        font-size: 1.5em;
+        font-weight: 500;
     }
 }
 
 
-/* Slides style */
+/* Slides */
 
 .fade:first-of-type {
     display: flex;
@@ -446,6 +486,16 @@ h1 {
     }
 }
 
+@media screen and (max-width: 600px) {
+    .prev {
+        top: 70%;
+    }
+
+    .next {
+        top: 70%;
+    }
+}
+
 @media screen and (max-width: 480px) {
     .stop {
         left: 45%;
@@ -455,6 +505,48 @@ h1 {
     .play {
         left: 45%;
         right: 45%;
+    }
+
+    .prev {
+        top: 67%;
+    }
+
+    .next {
+        top: 67%;
+    }
+
+    .hover-shadow {
+        font-size: 1.5em;
+    }
+
+    @keyframes hover {
+        0% {
+            transform: translateY(0px);
+        }
+
+        100% {
+            transform: translateY(0px);
+        }
+    }
+
+    @keyframes hover-shadow {
+        0% {
+            transform: translateY(0px);
+        }
+
+        100% {
+            transform: translateY(0px);
+        }
+    }
+
+    .hover-shadow:hover {
+        animation: none;
+        transform: translateY(0px);
+    }
+
+    .hover-shadow:hover:before {
+        animation: none;
+        transform: translateY(0px);
     }
 }
 
@@ -472,6 +564,18 @@ h1 {
 
     #map {
         height: 500px;
+        margin: 15px;
+        border: solid 1px #556270;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    #reserv-map {
+        flex-direction: column;
+    }
+
+    #map {
+        height: 300px;
         margin: 15px;
         border: solid 1px #556270;
     }
