@@ -236,17 +236,18 @@ const Map = {
               console.log(Map.inputPrenom[0].value);
               Map.reservationPanel.css('display', 'block');
               Map.availableBikes.text(`Il y a ${stationAvailableBikes} bicloo(s) disponible(s) à réserver`);
+
+              // Effectue un scroll doux vers le panneau de réservation
+              $('html, body').animate({
+                  scrollTop: Map.reservationPanel.offset().top
+                },
+                'slow'
+              );
             } else {
               Map.availableBikes.text('Il n\' y a aucun bicloo disponible dans cette station, veuillez sélectionner une nouvelle station');
               Map.reservationButton.css('display', 'none');
               Map.reservationPanel.css('display', 'none');
             }
-            // Effectue un scroll doux vers le panneau de réservation
-            $('html, body').animate({
-                scrollTop: Map.reservationPanel.offset().top
-              },
-              'slow'
-            );
           } else {
             Map.reservationPanel.css('display', 'none');
             alert("Veuillez remplir les champs Nom et Prénom.");
