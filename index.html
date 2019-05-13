@@ -8,6 +8,7 @@
         content="Retrouvez toutes les stations Bicloo Nantaise, et réservez y votre prochain bicloo !">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <link rel="stylesheet" href="css/style.css" type="text/css">
+    <link rel="stylesheet" href="css/style.min.css" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Courgette" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
@@ -18,7 +19,7 @@
 <body>
 
     <header id="navbar">
-        <a href="#"></a><img src="img/logoBicloo.png" alt="Logo Nantes"></a>
+        <a href="#"><img src="img/logoBicloo.png" alt="Logo Nantes"></a>
         <span class="navlink">
             <a class="link" href="#home">Accueil</a>
             <a class="link" href="#map">Carte & Réservation</a>
@@ -101,13 +102,14 @@
                     <form>
                         <input id="prenomForm" type="text" placeholder="Prénom" value="" required>
                         <input id="nomForm" type="text" placeholder="Nom" value="" required>
+                    </form>
                 </div>
-                </form>
                 <button class="reservation-button">Réserver</button>
             </div>
             <div class="reservation">
                 <h3>Signer pour réserver</h3>
-                <canvas id="signature-pad" width="auto" height="150">Votre navigateur ne supporte pas canvas.</canvas>
+                <canvas id="signature-pad" style="width:auto;" height="150">Votre navigateur ne supporte pas
+                    canvas.</canvas>
                 <div class="buttons">
                     <button id="clear">Effacer</button>
                     <button id="submit">Valider</button>
