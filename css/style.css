@@ -105,6 +105,7 @@ header i:hover {
     position: absolute;
     width: 200px;
     left: 50px;
+    top: 5px;
     vertical-align: middle;
 }
 
@@ -137,6 +138,7 @@ header i:hover {
     }
 
     #navbar img {
+        top: 11px;
         width: 170px;
         left: 30px;
     }
@@ -162,6 +164,7 @@ header i:hover {
     #navbar img {
         width: 110px;
         left: 10px;
+        top: 25px;
     }
 }
 
@@ -176,10 +179,12 @@ header i:hover {
     }
 
     #navbar img {
+        top: 15px;
         width: 90px;
     }
 
     header {
+        height: 70px;
         margin-bottom: 30px;
     }
 }
@@ -504,6 +509,23 @@ h1 {
     }
 }
 
+@media screen and (max-width: 1080px) {
+
+    .prev {
+        position: absolute;
+        top: 78%;
+    }
+
+    .next {
+        position: absolute;
+        top: 78%;
+    }
+
+    .hover-shadow {
+        font-size: 3em;
+    }
+}
+
 @media screen and (max-width: 956px) {
 
     .prev {
@@ -533,11 +555,11 @@ h1 {
 
 @media screen and (max-width: 600px) {
     .prev {
-        top: 70%;
+        top: 72%;
     }
 
     .next {
-        top: 70%;
+        top: 72%;
     }
 }
 
@@ -553,11 +575,11 @@ h1 {
     }
 
     .prev {
-        top: 70%;
+        top: 69%;
     }
 
     .next {
-        top: 70%;
+        top: 69%;
     }
 
     .hover-shadow {
@@ -607,11 +629,30 @@ h1 {
     }
 
     .prev {
-        top: 69%;
+        top: 68%;
     }
 
     .next {
-        top: 69%;
+        top: 68% !important;
+    }
+}
+
+@media screen and (max-width: 280px) {
+
+    .stop {
+        right: 43%;
+    }
+
+    .play {
+        right: 43%;
+    }
+
+    .prev {
+        top: 66%;
+    }
+
+    .next {
+        top: 66% !important;
     }
 }
 
